@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Fernando A. López, Technical University of Cartagena (Spain)" />
+<meta name="author" content="Román Mínguez, University of Castilla-La Mancha (Spain)" />
+<meta name="author" content="Antonio Páez, McMaster University (Canada)" />
+<meta name="author" content="Manuel Ruiz, Technical University of Cartagena (Spain)      " />
+
+<meta name="date" content="2022-01-27" />
+
+<title>spqdep user guide</title>
+
+<script src="spq_userguide_files/header-attrs-2.11/header-attrs.js"></script>
+<script src="spq_userguide_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="spq_userguide_files/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="spq_userguide_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="spq_userguide_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="spq_userguide_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="spq_userguide_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="spq_userguide_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="spq_userguide_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="spq_userguide_files/navigation-1.1/tabsets.js"></script>
+<link href="spq_userguide_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="spq_userguide_files/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">spqdep user guide</h1>
+<h3 class="subtitle">The user guide <br> <br> <br></h3>
+<h4 class="author">Fernando A. López, Technical University of Cartagena (Spain)</h4>
+<h4 class="author">Román Mínguez, University of Castilla-La Mancha (Spain)</h4>
+<h4 class="author">Antonio Páez, McMaster University (Canada)</h4>
+<h4 class="author">Manuel Ruiz, Technical University of Cartagena (Spain) <br> <br> <br></h4>
+<h4 class="date">2022-01-27 <br></h4>
+
+</div>
+
+
+<pre class="r"><code>library(spdep)
+library(spatialreg)
+library(sf)
+library(ggplot2)</code></pre>
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>This guide show the functionalities of the <strong>spqdep</strong> package to test spatial dependence on qualitative dataset.</p>
+<div id="datasets" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Datasets</h2>
+<p>Two data sets will be used as examples in this guide:</p>
+<ul>
+<li><p><strong>provinces_spain</strong>: The division of Spain into provinces. It is a multypolygon geometry with isolated provinces (islands without neighbouring provinces). See by example <span class="citation"><a href="#ref-paez2021" role="doc-biblioref">Paez et al.</a> (<a href="#ref-paez2021" role="doc-biblioref">2021</a>)</span>.</p></li>
+<li><p><strong>FastFood.sf</strong>: The data set used as example in <span class="citation"><a href="#ref-ruiz2010" role="doc-biblioref">Ruiz, López, and Páez</a> (<a href="#ref-ruiz2010" role="doc-biblioref">2010</a>)</span>. It is a geometry of points.</p></li>
+</ul>
+<p>The package is install like usual and the dataset can be loaded using the next code</p>
+<pre class="r"><code>library(spqdep)
+data(&quot;provinces_spain&quot;, package = &quot;spqdep&quot;)
+data(&quot;FastFood.sf&quot;, package = &quot;spqdep&quot;)</code></pre>
+</div>
+<div id="data-generating-process-dgp" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Data Generating Process (DGP)</h2>
+<p>Additional to the two dataset available in the <strong>spqdep</strong> package. The user can generate structured spatial processes using the  function. The DGP generate with this function defined in <span class="citation"><a href="#ref-ruiz2010" role="doc-biblioref">Ruiz, López, and Páez</a> (<a href="#ref-ruiz2010" role="doc-biblioref">2010</a>)</span>.</p>
+<p>The next code show how to generate a random process on a set of random points localized in a square 1x1. In this case, the connectivity criteria is based on the 4 near neighborhood.</p>
+<pre class="r"><code>set.seed(123)
+N &lt;- 100
+cx &lt;- runif(N)
+cy &lt;- runif(N)
+coor &lt;- cbind(cx,cy)
+p &lt;- c(1/6,3/6,2/6)
+rho = 0.5
+listw &lt;- spdep::nb2listw(knn2nb(knearneigh(coor, k = 4)))
+fx &lt;- dgp.spq(list = listw, p = p, rho = rho)</code></pre>
+<p>The next plot show the qualitative spatial process defined.</p>
+<pre class="r"><code>ggplot(data.frame(fx = fx, cx = cx, cy = cy), aes(x = cx, y = cy, color = fx)) + 
+    geom_point(size = 6) +
+    theme_bw()</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+</div>
+<div id="q-test" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Q-test</h1>
+<ul>
+<li><p>The Q-test <span class="citation">(<a href="#ref-ruiz2010" role="doc-biblioref">Ruiz, López, and Páez 2010</a>)</span> is based on m-surroundings</p></li>
+<li><p>Before to apply the Q-test it is necessary define a set of the m-surroundings</p></li>
+<li><p>The  function generate a set of m-surrounding.</p></li>
+<li><p>The user can tuning several parameters to obtain a congruent set of m-surroundings.</p></li>
+</ul>
+<div id="m-surroundings" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> m-surroundings</h2>
+<ul>
+<li><p><strong>m.surround()</strong> is the function to generate m-surroundings.</p></li>
+<li><p>The output of this function is a object of the class <strong>m_surr</strong></p></li>
+<li><p>Using the  method the user can explore the coherence of m-surroundings.</p></li>
+</ul>
+<p>By example. the next code obtain m-surroundings with length m = 3 and degree of overlapping r = 1:</p>
+<pre class="r"><code>m = 3
+r = 1
+mh &lt;- m.surround(x = cbind(cx,cy), m = m, r = r)
+class(mh)</code></pre>
+<pre><code>## [1] &quot;m_surr&quot; &quot;list&quot;</code></pre>
+</div>
+<div id="methods-for-the-m_surr-class" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Methods for the m_surr class</h2>
+<p>The <strong>spqdep</strong> have three methods that can be apply to this class: ,  and </p>
+<ul>
+<li> list the m-surroundings</li>
+</ul>
+<pre class="r"><code>print(mh)</code></pre>
+<pre><code>##       [,1] [,2] [,3]
+##  [1,]    1   19   17
+##  [2,]    2   65   53
+##  [3,]    3   42   77
+##  [4,]    4   11   26
+##  [5,]    6   18   85
+##  [6,]    7   79   93
+##  [7,]    8   21   31
+##  [8,]   13   58   68
+##  [9,]   15   98   74
+## [10,]   17   76   96
+## [11,]   20   87   24
+## [12,]   22   82   92
+## [13,]   25    9   61
+## [14,]   26   14    7
+## [15,]   27   72   13
+## [16,]   31    5   20
+## [17,]   37   73   89
+## [18,]   38   30   15
+## [19,]   41   91   62
+## [20,]   46   47   49
+## [21,]   48   43   55
+## [22,]   49   29   60
+## [23,]   52   86    3
+## [24,]   53   97   69
+## [25,]   55   28   27
+## [26,]   56   64   41
+## [27,]   57   35   63
+## [28,]   60   44   70
+## [29,]   61   78   94
+## [30,]   62   54   46
+## [31,]   63   83   75
+## [32,]   67   50   37
+## [33,]   68   84    2
+## [34,]   69   59   22
+## [35,]   70   12   99
+## [36,]   71   34   67
+## [37,]   74   51    6
+## [38,]   75   36  100
+## [39,]   77   88    8
+## [40,]   85   80   57
+## [41,]   89   32    4
+## [42,]   90   45   38
+## [43,]   92   23   25
+## [44,]   93   39   95
+## [45,]   94   33   71
+## [46,]   95   81   90
+## [47,]   96   40   56
+## [48,]   99   10   48
+## [49,]  100   66   52</code></pre>
+<ul>
+<li> generate a summary of some characteristics of the m-surroundings</li>
+</ul>
+<pre class="r"><code>summary(mh)</code></pre>
+<pre><code>## 
+## Characteristics of m-surrounding:
+## 
+## Number of m-surrounding (R): 49
+## Length of m-surrounding (m): 3
+## Number no-symbolized observations: 1
+## 
+## List of no-symbolized observations:
+## 16
+## 
+## List of the degree overlaping:
+##     There are 2 m-surrounding that have intersection with 1 m-surrounding
+##     There are 47 m-surrounding that have intersection with 2 m-surrounding
+## Mean degree of overlaping: 1.9592</code></pre>
+<ul>
+<li> show the spatial structure of the m-surroundings</li>
+</ul>
+<pre class="r"><code>plot(mh, type = 1)</code></pre>
+<p><img src="spq_userguide_files/figure-html/plot%20mh-1.png" width="672" /></p>
+<ul>
+<li>With the argument <strong>control</strong> the user can tuning some characteristics of the m-surroundings.</li>
+</ul>
+<p>By example, with <strong>control</strong> argument, the user can ‘prune’ non-coherent m-surroundings.</p>
+<pre class="r"><code>control &lt;- list (dtmaxknn = 10)
+mh.prune &lt;- m.surround(x = coor, m = m, r = r, control = control)
+plot(mh.prune)</code></pre>
+<p><img src="spq_userguide_files/figure-html/plot%20mh%20prune-1.png" width="672" /></p>
+</div>
+<div id="the-q-test" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> The Q-test</h2>
+<ul>
+<li>The function  obtain the Q-test for a spatial process develop in <span class="citation"><a href="#ref-ruiz2010" role="doc-biblioref">Ruiz, López, and Páez</a> (<a href="#ref-ruiz2010" role="doc-biblioref">2010</a>)</span>.</li>
+</ul>
+<p>The user must select the longitude of the m-surroundings (m) and the overlapping degree (r).
+In the next code example, the Q-test is obtain for the DGP spatial process (fx) obtain with the . The coordinates <strong>coor</strong> must be included as argument.</p>
+<pre class="r"><code>q.test &lt;- Q.test(fx = fx, coor = coor, m = 3, r = 1)</code></pre>
+<ul>
+<li><p>The output is a list with the result for symbols based on permutations (standard) and combinations (equivalent).</p></li>
+<li><p>The output of this function is an object of the <strong>spqtest</strong> class.</p></li>
+</ul>
+</div>
+<div id="distribution-of-q-test" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Distribution of Q-test</h2>
+<ul>
+<li><p>The asymptotic distribution is the default distribution to obtain the significance of Q-test <span class="citation">(<a href="#ref-ruiz2010" role="doc-biblioref">Ruiz, López, and Páez 2010</a>)</span>.</p></li>
+<li><p>Alternatively, the Monte Carlo method can be used to obtain the significance of the test. The paper <span class="citation"><a href="#ref-lopez2012" role="doc-biblioref">López and Páez</a> (<a href="#ref-lopez2012" role="doc-biblioref">2012</a>)</span> describe this approach.</p></li>
+</ul>
+<pre class="r"><code>q.test.mc &lt;- Q.test(fx = fx, coor = coor, m = 3, r = 1, distr = &quot;mc&quot;)
+summary(q.test.mc)</code></pre>
+<div id="mvomnquzwd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#mvomnquzwd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mvomnquzwd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mvomnquzwd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mvomnquzwd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mvomnquzwd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mvomnquzwd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mvomnquzwd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mvomnquzwd .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mvomnquzwd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mvomnquzwd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mvomnquzwd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mvomnquzwd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mvomnquzwd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#mvomnquzwd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvomnquzwd .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mvomnquzwd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mvomnquzwd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mvomnquzwd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mvomnquzwd .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mvomnquzwd .gt_left {
+  text-align: left;
+}
+
+#mvomnquzwd .gt_center {
+  text-align: center;
+}
+
+#mvomnquzwd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mvomnquzwd .gt_font_normal {
+  font-weight: normal;
+}
+
+#mvomnquzwd .gt_font_bold {
+  font-weight: bold;
+}
+
+#mvomnquzwd .gt_font_italic {
+  font-style: italic;
+}
+
+#mvomnquzwd .gt_super {
+  font-size: 65%;
+}
+
+#mvomnquzwd .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="9" class="gt_heading gt_title gt_font_normal" style>Qualitative Dependence Test (Q)</th>
+    </tr>
+    <tr>
+      <th colspan="9" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Distribution: mc. Distance: Euclidean</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Q</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">p.value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">k</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">N</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">m</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">R</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">R/n</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">5k^m</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="9" class="gt_group_heading">V1 - standard-permutations</td>
+    </tr>
+    <tr><td class="gt_row gt_right">231.96</td>
+<td class="gt_row gt_right">0.14300</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">27</td>
+<td class="gt_row gt_right">3.70</td>
+<td class="gt_row gt_right">135</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="9" class="gt_group_heading">V1 - equivalent-combinations</td>
+    </tr>
+    <tr><td class="gt_row gt_right">63.59</td>
+<td class="gt_row gt_right">0.13900</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_right">10.00</td>
+<td class="gt_row gt_right">135</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<div id="methods-for-the-spqtest-class" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Methods for the spqtest class</h2>
+<p>A summary can be apply to an object of the spqtest class:</p>
+<pre class="r"><code>summary(q.test)</code></pre>
+<div id="bxchperxsc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bxchperxsc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bxchperxsc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bxchperxsc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bxchperxsc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bxchperxsc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bxchperxsc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bxchperxsc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bxchperxsc .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bxchperxsc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bxchperxsc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bxchperxsc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bxchperxsc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bxchperxsc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#bxchperxsc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxchperxsc .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bxchperxsc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bxchperxsc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#bxchperxsc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bxchperxsc .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#bxchperxsc .gt_left {
+  text-align: left;
+}
+
+#bxchperxsc .gt_center {
+  text-align: center;
+}
+
+#bxchperxsc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bxchperxsc .gt_font_normal {
+  font-weight: normal;
+}
+
+#bxchperxsc .gt_font_bold {
+  font-weight: bold;
+}
+
+#bxchperxsc .gt_font_italic {
+  font-style: italic;
+}
+
+#bxchperxsc .gt_super {
+  font-size: 65%;
+}
+
+#bxchperxsc .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="11" class="gt_heading gt_title gt_font_normal" style>Qualitative Dependence Test (Q)</th>
+    </tr>
+    <tr>
+      <th colspan="11" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Distribution: asymptotic. Distance: Euclidean</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Q</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">df</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">p.value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">k</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">N</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">m</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">r</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">R</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">R/n</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">5k^m</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="11" class="gt_group_heading">V1 - standard-permutations</td>
+    </tr>
+    <tr><td class="gt_row gt_right">63.91</td>
+<td class="gt_row gt_right">26</td>
+<td class="gt_row gt_right">0.00005</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">27</td>
+<td class="gt_row gt_right">1.81</td>
+<td class="gt_row gt_right">135</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="11" class="gt_group_heading">V1 - equivalent-combinations</td>
+    </tr>
+    <tr><td class="gt_row gt_right">14.28</td>
+<td class="gt_row gt_right">9</td>
+<td class="gt_row gt_right">0.11283</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_right">4.90</td>
+<td class="gt_row gt_right">135</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>The histogram of the number of symbols is obtain appling the plot method.</p>
+<pre class="r"><code>plot(q.test)</code></pre>
+<pre><code>## [[1]]</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre><code>## 
+## [[2]]</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+</div>
+<div id="the-q-test-using-a-sf-object" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> The Q-test using a sf object</h2>
+<ul>
+<li>A sf object <span class="citation">(<a href="#ref-pebesma2018" role="doc-biblioref">Pebesma 2018</a>)</span> or a data frame can be used as input of the  function:</li>
+</ul>
+<pre class="r"><code># Case 3: With a sf object with isolated areas
+sf_use_s2(FALSE)</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre class="r"><code>provinces_spain$Male2Female &lt;- factor(provinces_spain$Male2Female &gt; 100)
+levels(provinces_spain$Male2Female) = c(&quot;men&quot;,&quot;woman&quot;)
+f1 &lt;- ~ Male2Female
+q.test.sf &lt;- Q.test(formula = f1, data = provinces_spain, m = 3, r = 1)</code></pre>
+<ul>
+<li>The method  show the histogram of the number of symbols</li>
+</ul>
+<pre class="r"><code>plot(q.test.sf)</code></pre>
+<pre><code>## [[1]]</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre><code>## 
+## [[2]]</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+</div>
+</div>
+<div id="maps-comparison.-the-qmap-test" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Maps comparison. The QMap-test</h1>
+<ul>
+<li>The function  obtain the test for maps comparison publish in <span class="citation"><a href="#ref-Ruiz2012b" role="doc-biblioref">Ruiz, López, and Páez</a> (<a href="#ref-Ruiz2012b" role="doc-biblioref">2012</a>)</span></li>
+</ul>
+<div id="the-qmap-test" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> The QMap test</h2>
+<p>The next code generate two qualitative spatial process with different levels of spatial dependence and the Q-Map is apply.</p>
+<pre class="r"><code>p &lt;- c(1/6,3/6,2/6)
+rho = 0.5
+QY1 &lt;- dgp.spq(p = p, listw = listw, rho = rho)
+rho = 0.8
+QY2 &lt;- dgp.spq(p = p, listw = listw, rho = rho)
+dt = data.frame(QY1,QY2)
+m = 3
+r = 1
+formula &lt;- ~ QY1 + QY2
+control &lt;- list(dtmaxknn = 10)
+qmap &lt;- Q.map.test(formula = formula, data = dt, coor = coor, m = m, r = r, type =&quot;combinations&quot;, control = control)</code></pre>
+<pre><code>## Warning in Q.map.test(formula = formula, data = dt, coor = coor, m = m, : The
+## ratio between the number of symbolized observations and the number of symbols is
+## lower than 5.</code></pre>
+<ul>
+<li>The output of  id an object of the classes <strong>qmap</strong> and <strong>htest</strong></li>
+</ul>
+</div>
+<div id="methods-for-qmap-class" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Methods for qmap class</h2>
+<ul>
+<li>The qmap object is a list with two elements. Each element is an object of the class <strong>htext</strong></li>
+</ul>
+<pre class="r"><code>print(qmap[[1]])</code></pre>
+<pre><code>## 
+##  Q-Map test of Equivalence for qualitative data.
+##  
+##  Symbols type: combinations
+##  
+##  Ratio Symbolized observations/Num symbols = 4.6
+## 
+## data:  QY1 and QY2
+## QE = 137.66, df = 9, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided</code></pre>
+<ul>
+<li>The  method obtains the distribution of symbols with the confidence intervals specified by the user.</li>
+</ul>
+<pre class="r"><code>plot(qmap, ci=.6)</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+</div>
+<div id="runs-tests" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Runs tests</h1>
+<p>The runs test <span class="citation">(<a href="#ref-ruiz2021" role="doc-biblioref">Ruiz, López, and Páez 2021</a>)</span> have global and local versions</p>
+<div id="global-runs-test" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Global Runs test</h2>
+<ul>
+<li>The function <strong>sp.runs.test</strong> obtain the spatial runs test.</li>
+</ul>
+<pre class="r"><code>listw &lt;- knearneigh(coor, k = 3)
+srq &lt;- sp.runs.test(fx = fx, listw = listw)</code></pre>
+<ul>
+<li>The output of this function is a object of the classes <strong>sprunstest</strong> and <strong>htest</strong></li>
+</ul>
+</div>
+<div id="methods-for-spruntest-class" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Methods for spruntest class</h2>
+<ul>
+<li>The <strong>spqdep</strong> has two methods for this class  y </li>
+</ul>
+<pre class="r"><code>print(srq)</code></pre>
+<pre><code>## 
+##  Runs test of spatial dependence for qualitative data. Asymptotic
+##  version
+## 
+## data:  mxf
+## sp.runs test = -3.5704, p-value = 0.0003564
+## alternative hypothesis: two.sided
+## sample estimates:
+##          Total runs     Mean total runs Variance total runs 
+##            244.0000            285.5152            135.1986</code></pre>
+<pre class="r"><code>plot(srq)</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="the-local-runs-test" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> The local Runs test</h2>
+<ul>
+<li>The function <strong>local.sp.runs.test</strong> obtain the local test based on runs.</li>
+</ul>
+</div>
+<div id="asymptotic-version" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Asymptotic version</h2>
+<ul>
+<li>Asymptotic version</li>
+</ul>
+<pre class="r"><code>lsrq &lt;- local.sp.runs.test(fx = fx, listw = listw, alternative = &quot;less&quot;)</code></pre>
+<ul>
+<li>The  method list the statistic of each observation (point or region)</li>
+</ul>
+<pre class="r"><code>print(lsrq)</code></pre>
+<pre><code>##     runs.i      E.i     Std.i    z.value    p.value
+## 1        4 2.855152 0.8722689  1.3124950 0.90532341
+## 2        2 2.855152 0.8722689 -0.9803761 0.16345026
+## 3        3 2.855152 0.8722689  0.1660594 0.56594492
+## 4        2 2.855152 0.8722689 -0.9803761 0.16345026
+## 5        2 2.855152 0.8722689 -0.9803761 0.16345026
+## 6        4 2.855152 0.8722689  1.3124950 0.90532341
+## 7        3 2.855152 0.8722689  0.1660594 0.56594492
+## 8        2 2.855152 0.8722689 -0.9803761 0.16345026
+## 9        4 2.855152 0.8722689  1.3124950 0.90532341
+## 10       3 2.855152 0.8722689  0.1660594 0.56594492
+## 11       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 12       3 2.855152 0.8722689  0.1660594 0.56594492
+## 13       3 2.855152 0.8722689  0.1660594 0.56594492
+## 14       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 15       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 16       3 2.855152 0.8722689  0.1660594 0.56594492
+## 17       3 2.855152 0.8722689  0.1660594 0.56594492
+## 18       3 2.855152 0.8722689  0.1660594 0.56594492
+## 19       3 2.855152 0.8722689  0.1660594 0.56594492
+## 20       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 21       3 2.855152 0.8722689  0.1660594 0.56594492
+## 22       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 23       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 24       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 25       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 26       3 2.855152 0.8722689  0.1660594 0.56594492
+## 27       3 2.855152 0.8722689  0.1660594 0.56594492
+## 28       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 29       3 2.855152 0.8722689  0.1660594 0.56594492
+## 30       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 31       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 32       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 33       3 2.855152 0.8722689  0.1660594 0.56594492
+## 34       3 2.855152 0.8722689  0.1660594 0.56594492
+## 35       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 36       3 2.855152 0.8722689  0.1660594 0.56594492
+## 37       4 2.855152 0.8722689  1.3124950 0.90532341
+## 38       3 2.855152 0.8722689  0.1660594 0.56594492
+## 39       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 40       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 41       3 2.855152 0.8722689  0.1660594 0.56594492
+## 42       4 2.855152 0.8722689  1.3124950 0.90532341
+## 43       3 2.855152 0.8722689  0.1660594 0.56594492
+## 44       3 2.855152 0.8722689  0.1660594 0.56594492
+## 45       4 2.855152 0.8722689  1.3124950 0.90532341
+## 46       3 2.855152 0.8722689  0.1660594 0.56594492
+## 47       3 2.855152 0.8722689  0.1660594 0.56594492
+## 48       3 2.855152 0.8722689  0.1660594 0.56594492
+## 49       3 2.855152 0.8722689  0.1660594 0.56594492
+## 50       3 2.855152 0.8722689  0.1660594 0.56594492
+## 51       3 2.855152 0.8722689  0.1660594 0.56594492
+## 52       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 53       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 54       3 2.855152 0.8722689  0.1660594 0.56594492
+## 55       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 56       3 2.855152 0.8722689  0.1660594 0.56594492
+## 57       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 58       3 2.855152 0.8722689  0.1660594 0.56594492
+## 59       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 60       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 61       3 2.855152 0.8722689  0.1660594 0.56594492
+## 62       3 2.855152 0.8722689  0.1660594 0.56594492
+## 63       3 2.855152 0.8722689  0.1660594 0.56594492
+## 64       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 65       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 66       3 2.855152 0.8722689  0.1660594 0.56594492
+## 67       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 68       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 69       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 70       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 71       3 2.855152 0.8722689  0.1660594 0.56594492
+## 72       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 73       4 2.855152 0.8722689  1.3124950 0.90532341
+## 74       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 75       3 2.855152 0.8722689  0.1660594 0.56594492
+## 76       3 2.855152 0.8722689  0.1660594 0.56594492
+## 77       3 2.855152 0.8722689  0.1660594 0.56594492
+## 78       4 2.855152 0.8722689  1.3124950 0.90532341
+## 79       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 80       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 81       3 2.855152 0.8722689  0.1660594 0.56594492
+## 82       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 83       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 84       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 85       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 86       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 87       3 2.855152 0.8722689  0.1660594 0.56594492
+## 88       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 89       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 90       4 2.855152 0.8722689  1.3124950 0.90532341
+## 91       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 92       3 2.855152 0.8722689  0.1660594 0.56594492
+## 93       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 94       3 2.855152 0.8722689  0.1660594 0.56594492
+## 95       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 96       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 97       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 98       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 99       4 2.855152 0.8722689  1.3124950 0.90532341
+## 100      4 2.855152 0.8722689  1.3124950 0.90532341</code></pre>
+<ul>
+<li>The  method identify the localization with values of local test significant.</li>
+</ul>
+<pre class="r"><code>plot(lsrq, sig = 0.05)</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+</div>
+<div id="monte-carlo-local-runs-test" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Monte Carlo local runs test</h2>
+<ul>
+<li>The Monte Carlo distribution ot the local test using a sf object</li>
+</ul>
+<pre class="r"><code>data(&quot;provinces_spain&quot;)
+listw &lt;- spdep::poly2nb(as(provinces_spain,&quot;Spatial&quot;), queen = FALSE)</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
+<pre class="r"><code>provinces_spain$Male2Female &lt;- factor(provinces_spain$Male2Female &gt; 100)
+levels(provinces_spain$Male2Female) = c(&quot;men&quot;,&quot;woman&quot;)
+plot(provinces_spain[&quot;Male2Female&quot;])</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>formula &lt;- ~ Male2Female
+# Boots Version
+lsrq &lt;- local.sp.runs.test(formula = formula, data = provinces_spain, listw = listw, distr =&quot;bootstrap&quot;, nsim = 199)
+plot(lsrq, sf = provinces_spain, sig = 0.10)</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+</div>
+</div>
+<div id="the-scan-test" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> The scan test</h1>
+<ul>
+<li><p>Two of the scan tests to identify clusters can be apply to test spatial structure in qualitative spatial processes.</p></li>
+<li><p>The scan test don’t need pre-define the classical W conectivity matrix.</p></li>
+<li><p>See <span class="citation"><a href="#ref-Kanaroglou2016" role="doc-biblioref">Kanaroglou</a> (<a href="#ref-Kanaroglou2016" role="doc-biblioref">2016</a>)</span></p></li>
+<li><p>The scan tests contrasts the null of independence of a spatial qualitative process and give additional information indicating one (or perhaps more) spatial cluster(s).</p></li>
+<li><p>The scan tests don’t have asymptotic distribution. The significance is obtained by permutational resampling.</p></li>
+<li><p>The output of the scan function is an object of the classes <strong>scantest</strong> and <strong>htest</strong></p></li>
+</ul>
+<div id="scan-bernoulli" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Scan bernoulli</h2>
+<ul>
+<li>For qualitative spatial process with two categories the bernoulli scan test is obtain with the next code</li>
+</ul>
+<pre class="r"><code>formula &lt;- ~ Male2Female
+scan.spain &lt;- spqdep::scan.test(formula = formula, data = provinces_spain, case=&quot;men&quot;, nsim = 99, distr = &quot;bernoulli&quot;)
+print(scan.spain)</code></pre>
+<pre><code>## 
+##  Scan test. Distribution: bernoulli
+## 
+## data:  Male2Female
+## scan-loglik = 6.0359, p-value = 0.07
+## alternative hypothesis: High
+## sample estimates:
+##                                        
+## Total observations in the MLC =   16.00
+## Expected cases in the MLC =       11.84
+## Observed cases in the MLC =       16.00</code></pre>
+</div>
+<div id="scan-multinomial" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> scan multinomial</h2>
+<ul>
+<li>In case of a spatial process with three or more categories</li>
+</ul>
+<pre class="r"><code>data(FastFood.sf)
+formula &lt;- ~ Type
+scan.fastfood &lt;- scan.test(formula = formula, data = FastFood.sf, nsim = 99, distr = &quot;multinomial&quot;, windows = &quot;elliptic&quot;, 
+                           nv = 50)</code></pre>
+<pre><code>## Warning in scan.test(formula = formula, data = FastFood.sf, nsim = 99, distr
+## = &quot;multinomial&quot;, : A total of 18 clusters has the same value of the statistic.
+## Report as MLC only the first</code></pre>
+<pre class="r"><code>print(scan.fastfood)</code></pre>
+<pre><code>## 
+##  Scan test. Distribution: multinomial
+## 
+## data:  Type
+## scan-loglik = 15.506, p-value &lt; 2.2e-16
+## sample estimates:
+##                  H     P     S Sum
+## cases.expect 13.48 14.86 14.66  43
+## cases.observ 16.00  1.00 26.00  43</code></pre>
+</div>
+<div id="methods-for-scan-test" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Methods for scan test</h2>
+<ul>
+<li>Two method can be used with <strong>scantest</strong> objects:  and </li>
+</ul>
+<pre class="r"><code>summary(scan.fastfood)</code></pre>
+<pre><code>## 
+## Summary of data:
+## Distribution....................: multinomial
+## Number of locations.............: 877
+## Total number of cases...........: 877
+## 
+## Scan statistic:
+## Observed cases in the MLC...: 13.48 14.86 14.66 43
+## Expected cases in the MLC...: 16 1 26 43
+## Value of statisitic (loglik)....: 15.51
+## p-value.........................: 0
+## 
+## IDs of cluster detect:
+## Location IDs included..................:  68 849 152 499 630 763 827 765 617 600 607 48 58 588 743 843 74 122 750 115 645 61 226 796 876 699 610 597 596 721 751 53 186 659 778 63 106 229 585 738 612 131 208</code></pre>
+<pre class="r"><code>plot(scan.spain, sf = provinces_spain)</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<pre class="r"><code>plot(scan.fastfood, sf = FastFood.sf)</code></pre>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+</div>
+</div>
+<div id="similarity-test" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Similarity test</h1>
+<p>The <span class="citation"><a href="#ref-Farber2014" role="doc-biblioref">Farber, Marin, and Páez</a> (<a href="#ref-Farber2014" role="doc-biblioref">2014</a>)</span> paper develop the similarity test</p>
+<div id="simiarity-test" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Simiarity test</h2>
+<p>The  function calculates the similarity test for both asymptotic distribution and permutational resampling.</p>
+<pre class="r"><code>coor &lt;- st_coordinates(st_centroid(FastFood.sf))
+listw &lt;- spdep::knearneigh(coor, k = 4)
+formula &lt;- ~ Type
+similarity &lt;- similarity.test(formula = formula, data = FastFood.sf, listw = listw)
+print(similarity)
+## 
+##  Similarity test of spatial dependence for qualitative data.
+##  Distribution: asymptotic
+## 
+## data:  Type
+## Similarity-test = -5.4476, p-value = 5.105e-08
+## alternative hypothesis: two.sided</code></pre>
+</div>
+</div>
+<div id="join-count-tests" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> join-count tests</h1>
+<ul>
+<li>The functions of the <strong>spdep</strong> R-package have been <strong>wrapped</strong> for Bernoulli and Multinomial distributions. Asymptotic or Monte Carlo distributions (permutations) can be used to evaluate the signification of the tests.</li>
+</ul>
+<div id="asyntotic-distribution" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Asyntotic distribution</h2>
+<pre class="r"><code>provinces_spain$Older &lt;- cut(provinces_spain$Older, breaks = c(-Inf,19,22.5,Inf))
+levels(provinces_spain$Older) = c(&quot;low&quot;,&quot;middle&quot;,&quot;high&quot;)
+f1 &lt;- ~ Older + Male2Female
+jc1 &lt;- jc.test(formula = f1, data = provinces_spain, distr = &quot;asymptotic&quot;, alternative = &quot;greater&quot;, zero.policy = TRUE)</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
+<pre class="r"><code>summary(jc1)</code></pre>
+<div id="hyffzpwhxh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#hyffzpwhxh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hyffzpwhxh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hyffzpwhxh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hyffzpwhxh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hyffzpwhxh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hyffzpwhxh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hyffzpwhxh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hyffzpwhxh .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hyffzpwhxh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hyffzpwhxh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hyffzpwhxh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hyffzpwhxh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hyffzpwhxh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#hyffzpwhxh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyffzpwhxh .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hyffzpwhxh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hyffzpwhxh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hyffzpwhxh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hyffzpwhxh .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hyffzpwhxh .gt_left {
+  text-align: left;
+}
+
+#hyffzpwhxh .gt_center {
+  text-align: center;
+}
+
+#hyffzpwhxh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hyffzpwhxh .gt_font_normal {
+  font-weight: normal;
+}
+
+#hyffzpwhxh .gt_font_bold {
+  font-weight: bold;
+}
+
+#hyffzpwhxh .gt_font_italic {
+  font-style: italic;
+}
+
+#hyffzpwhxh .gt_super {
+  font-size: 65%;
+}
+
+#hyffzpwhxh .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>JoinCount Spatial Tests (asymptotic)</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">pairs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">z-value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">pvalue</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Joincount</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Expected</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Variance</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="6" class="gt_group_heading">Older - multinomial - alternative: greater - Join count test under nonfree sampling</td>
+    </tr>
+    <tr><td class="gt_row gt_left">high:high</td>
+<td class="gt_row gt_right">&minus;0.56</td>
+<td class="gt_row gt_right">0.71077</td>
+<td class="gt_row gt_right">14</td>
+<td class="gt_row gt_right">15.71</td>
+<td class="gt_row gt_right">9.48</td></tr>
+    <tr><td class="gt_row gt_left">low:low</td>
+<td class="gt_row gt_right">&minus;0.93</td>
+<td class="gt_row gt_right">0.82392</td>
+<td class="gt_row gt_right">7</td>
+<td class="gt_row gt_right">9.34</td>
+<td class="gt_row gt_right">6.35</td></tr>
+    <tr><td class="gt_row gt_left">middle:middle</td>
+<td class="gt_row gt_right">&minus;0.88</td>
+<td class="gt_row gt_right">0.81070</td>
+<td class="gt_row gt_right">13</td>
+<td class="gt_row gt_right">15.71</td>
+<td class="gt_row gt_right">9.48</td></tr>
+    <tr><td class="gt_row gt_left">low:high</td>
+<td class="gt_row gt_right">&minus;0.47</td>
+<td class="gt_row gt_right">0.68162</td>
+<td class="gt_row gt_right">24</td>
+<td class="gt_row gt_right">25.88</td>
+<td class="gt_row gt_right">15.78</td></tr>
+    <tr><td class="gt_row gt_left">middle:high</td>
+<td class="gt_row gt_right">&minus;1.21</td>
+<td class="gt_row gt_right">0.88738</td>
+<td class="gt_row gt_right">28</td>
+<td class="gt_row gt_right">33.27</td>
+<td class="gt_row gt_right">18.88</td></tr>
+    <tr><td class="gt_row gt_left">middle:low</td>
+<td class="gt_row gt_right">&minus;0.22</td>
+<td class="gt_row gt_right">0.58727</td>
+<td class="gt_row gt_right">25</td>
+<td class="gt_row gt_right">25.88</td>
+<td class="gt_row gt_right">15.78</td></tr>
+    <tr><td class="gt_row gt_left">Jtot</td>
+<td class="gt_row gt_right">&minus;1.29</td>
+<td class="gt_row gt_right">0.90190</td>
+<td class="gt_row gt_right">77</td>
+<td class="gt_row gt_right">85.02</td>
+<td class="gt_row gt_right">38.52</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="6" class="gt_group_heading">Male2Female - binomial - alternative: greater - Join count test under nonfree sampling</td>
+    </tr>
+    <tr><td class="gt_row gt_left">men-men</td>
+<td class="gt_row gt_right">&minus;2.17</td>
+<td class="gt_row gt_right">0.98504</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">68.39</td>
+<td class="gt_row gt_right">14.92</td></tr>
+    <tr><td class="gt_row gt_left">woman-woman</td>
+<td class="gt_row gt_right">2.11</td>
+<td class="gt_row gt_right">0.01740</td>
+<td class="gt_row gt_right">13</td>
+<td class="gt_row gt_right">8.01</td>
+<td class="gt_row gt_right">5.59</td></tr>
+    <tr><td class="gt_row gt_left">men-woman</td>
+<td class="gt_row gt_right">&minus;2.47</td>
+<td class="gt_row gt_right">0.99333</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">49.39</td>
+<td class="gt_row gt_right">21.19</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<div id="monte-carlo-distribution" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Monte Carlo distribution</h2>
+<pre class="r"><code>jc1 &lt;- jc.test(formula = f1, data = provinces_spain, distr = &quot;mc&quot;, alternative = &quot;greater&quot;, zero.policy = TRUE)</code></pre>
+<pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
+<pre class="r"><code>summary(jc1)</code></pre>
+<div id="dkrtpzdols" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#dkrtpzdols .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#dkrtpzdols .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#dkrtpzdols .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#dkrtpzdols .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#dkrtpzdols .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#dkrtpzdols .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#dkrtpzdols .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#dkrtpzdols .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dkrtpzdols .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#dkrtpzdols .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#dkrtpzdols .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#dkrtpzdols .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#dkrtpzdols .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#dkrtpzdols .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dkrtpzdols .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#dkrtpzdols .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#dkrtpzdols .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#dkrtpzdols .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#dkrtpzdols .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#dkrtpzdols .gt_left {
+  text-align: left;
+}
+
+#dkrtpzdols .gt_center {
+  text-align: center;
+}
+
+#dkrtpzdols .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#dkrtpzdols .gt_font_normal {
+  font-weight: normal;
+}
+
+#dkrtpzdols .gt_font_bold {
+  font-weight: bold;
+}
+
+#dkrtpzdols .gt_font_italic {
+  font-style: italic;
+}
+
+#dkrtpzdols .gt_super {
+  font-size: 65%;
+}
+
+#dkrtpzdols .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="5" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>JoinCount Spatial Tests (Monte Carlo)</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">pairs</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">pvalue</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Joincount</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Expected</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Variance</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="5" class="gt_group_heading">Older - multinomial - alternative: greater - Monte-Carlo simulation of
+        join-count statistic (nonfree sampling)</td>
+    </tr>
+    <tr><td class="gt_row gt_left">high:high</td>
+<td class="gt_row gt_right">0.50900</td>
+<td class="gt_row gt_right">14</td>
+<td class="gt_row gt_right">13.77</td>
+<td class="gt_row gt_right">10.80</td></tr>
+    <tr><td class="gt_row gt_left">low:low</td>
+<td class="gt_row gt_right">0.68200</td>
+<td class="gt_row gt_right">7</td>
+<td class="gt_row gt_right">8.33</td>
+<td class="gt_row gt_right">6.31</td></tr>
+    <tr><td class="gt_row gt_left">middle:middle</td>
+<td class="gt_row gt_right">0.53800</td>
+<td class="gt_row gt_right">13</td>
+<td class="gt_row gt_right">13.86</td>
+<td class="gt_row gt_right">10.40</td></tr>
+    <tr><td class="gt_row gt_left">low:high</td>
+<td class="gt_row gt_right">0.40700</td>
+<td class="gt_row gt_right">24</td>
+<td class="gt_row gt_right">22.89</td>
+<td class="gt_row gt_right">16.40</td></tr>
+    <tr><td class="gt_row gt_left">middle:high</td>
+<td class="gt_row gt_right">0.68300</td>
+<td class="gt_row gt_right">28</td>
+<td class="gt_row gt_right">29.55</td>
+<td class="gt_row gt_right">18.26</td></tr>
+    <tr><td class="gt_row gt_left">middle:low</td>
+<td class="gt_row gt_right">0.25300</td>
+<td class="gt_row gt_right">25</td>
+<td class="gt_row gt_right">22.60</td>
+<td class="gt_row gt_right">16.01</td></tr>
+    <tr><td class="gt_row gt_left">Jtot</td>
+<td class="gt_row gt_right">0.38900</td>
+<td class="gt_row gt_right">77</td>
+<td class="gt_row gt_right">75.03</td>
+<td class="gt_row gt_right">22.51</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="5" class="gt_group_heading">Male2Female - binomial - alternative: greater - Monte-Carlo simulation of join-count statistic</td>
+    </tr>
+    <tr><td class="gt_row gt_left">men-men</td>
+<td class="gt_row gt_right">0.52150</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">60.34</td>
+<td class="gt_row gt_right">23.29</td></tr>
+    <tr><td class="gt_row gt_left">woman-woman</td>
+<td class="gt_row gt_right">0.01750</td>
+<td class="gt_row gt_right">13</td>
+<td class="gt_row gt_right">7.10</td>
+<td class="gt_row gt_right">5.95</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Farber2014" class="csl-entry">
+Farber, Steven, Manuel Ruiz Marin, and Antonio Páez. 2014. <span>“Testing for Spatial Independence Using Similarity Relations.”</span> <em>Geographical Analysis</em> 47 (2): 97–120. <a href="https://doi.org/10.1111/gean.12044">https://doi.org/10.1111/gean.12044</a>.
+</div>
+<div id="ref-Kanaroglou2016" class="csl-entry">
+Kanaroglou, Pavlos. 2016. <em>Spatial Analysis in Health Geography</em>. Routledge. <a href="https://doi.org/10.4324/9781315610252">https://doi.org/10.4324/9781315610252</a>.
+</div>
+<div id="ref-lopez2012" class="csl-entry">
+López, Fernando A, and Antonio Páez. 2012. <span>“Distribution-Free Inference for q (m) Based on Permutational Bootstrapping: An Application to the Spatial Co-Location Pattern of Firms in Madrid.”</span> <em>Estad<span>ı́</span>stica Espa<span>ñ</span>ola</em> 54 (177): 135–56.
+</div>
+<div id="ref-paez2021" class="csl-entry">
+Paez, Antonio, Fernando A Lopez, Tatiane Menezes, Renata Cavalcanti, and Maira Galdino da Rocha Pitta. 2021. <span>“A Spatio-Temporal Analysis of the Environmental Correlates of COVID-19 Incidence in Spain.”</span> <em>Geographical Analysis</em> 53 (3): 397–421.
+</div>
+<div id="ref-pebesma2018" class="csl-entry">
+Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R: Standardized Support for Spatial Vector Data</span>.”</span> <em><span>The R Journal</span></em> 10 (1): 439–46. <a href="https://doi.org/10.32614/RJ-2018-009">https://doi.org/10.32614/RJ-2018-009</a>.
+</div>
+<div id="ref-ruiz2010" class="csl-entry">
+Ruiz, Manuel, Fernando López, and Antonio Páez. 2010. <span>“Testing for Spatial Association of Qualitative Data Using Symbolic Dynamics.”</span> <em>Journal of Geographical Systems</em> 12 (3): 281–309.
+</div>
+<div id="ref-Ruiz2012b" class="csl-entry">
+———. 2012. <span>“Comparison of Thematic Maps Using Symbolic Entropy.”</span> <em>International Journal of Geographical Information Science</em> 26 (3): 413–39. <a href="https://doi.org/10.1080/13658816.2011.586327">https://doi.org/10.1080/13658816.2011.586327</a>.
+</div>
+<div id="ref-ruiz2021" class="csl-entry">
+———. 2021. <span>“A Test for Global and Local Homogeneity of Categorical Data Based on Spatial Runs.”</span> <em>Working Paper</em>.
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = false;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
