@@ -15,9 +15,11 @@
 #' of "High" (default), "Both" or "Low".
 #' @param distr distribution of the spatial process: "bernoulli" for two levels or "multinomial" for three or more levels.
 #' @param windows a string to select the type of cluster "circular" (default) of "elliptic".
+#' @param minsize Minimum number of observations inside of Most Likely Cluster and secondary clusters.
 #' @param control List of additional control arguments.
-#' @usage scan.test(formula = NULL, data = NULL, fx = NULL, coor = NULL, case = NULL, nv = NULL,
-#' nsim = NULL, distr = NULL, windows = "circular", alternative = "High", control = list())
+#' @usage scan.test(formula = NULL, data = NULL, fx = NULL, coor = NULL,
+#' case = NULL, nv = NULL, nsim = NULL, distr = NULL, windows = "circular",
+#' alternative = "High", minsize = 1, control = list())
 #' @details
 #'
 #' Two alternative sets of arguments can be included in this function to compute the scan test:
@@ -52,11 +54,17 @@
 #'     \code{nv} \tab Maximum number of observations into the cluster.\cr
 #'     \code{data.name} \tab A character string giving the name of the factor.\cr
 #'     \code{coor} \tab coordinates.\cr
-#'     \code{alternative} \tab Only for bernoulli spatial process. A character string describing the alternative hypothesis select by the user.\cr
+#'     \code{alternative} \tab Only for bernoulli spatial process. A character string describing
+#'     the alternative hypothesis select by the user.\cr
 #'     \code{p.value} \tab p-value of the scan test.\cr
 #'     \code{cases.expect} \tab Expected cases into the MLC.\cr
 #'     \code{cases.observ} \tab Observed cases into the MLC.\cr
 #'     \code{nsim} \tab Number of permutations.\cr
+#'     \code{scan.mc} \tab a (nsim x 1) vector with the loglik values under bootstrap permutation.\cr
+#'     \code{secondary.clusters} \tab a list with the observations included into the secondary clusters.\cr
+#'     \code{loglik.second} \tab a vector with the value of the secondary scan tests (maximum Log-likelihood ratio).\cr
+#'     \code{p.value.secondary} \tab a vector with the p-value of the secondary scan tests.\cr
+#'     \code{Alternative.MLC} \tab A vector with the observations included in another cluster with the same loglik than MLC.\cr
 #'     }
 #' @section Control arguments:
 #'   \tabular{ll}{
@@ -78,8 +86,9 @@
 #'     \item Jung I, Kulldorff M, Richard OJ (2010).
 #'     A spatial scan statistic for multinomial data.
 #'       \emph{Statistics in Medicine}. 29(18), 1910-1918
-#'      \item Páez, A., López-Hernández, F. A., Ortega-García, J. A., & Ruiz, M. (2016).
-#'      Clustering and co-occurrence of cancer types: A comparison of techniques with an application to pediatric cancer in Murcia, Spain.
+#'      \item Páez, A., López-Hernández, F.A., Ortega-García, J.A., Ruiz, M. (2016).
+#'      Clustering and co-occurrence of cancer types: A comparison of techniques with
+#'      an application to pediatric cancer in Murcia, Spain.
 #'      \emph{Spatial Analysis in Health Geography}, 69-90.
 #'
 #'   }
@@ -102,21 +111,20 @@
 #' plot(scan, sf = provinces_spain)
 #'
 #' ## With maximum number of neighborhood
-#' scan <- scan.test(formula = formula, data = provinces_spain, case = "woman", nv = 5,
+#' scan <- scan.test(formula = formula, data = provinces_spain, case = "woman",
 #' nsim = 99, distr = "bernoulli")
 #' print(scan)
 #' plot(scan, sf = provinces_spain)
 #'
 #' \donttest{
 #' ## With elliptic windows
-#' scan <- scan.test(formula = formula, data = provinces_spain, case = "men", nv = 20,
+#' scan <- scan.test(formula = formula, data = provinces_spain, case = "men", nv = 25,
 #' nsim = 99, distr = "bernoulli", windows ="elliptic")
 #' print(scan)
 #' scan <- scan.test(formula = formula, data = provinces_spain, case = "men", nv = 15,
 #' nsim = 99, distr = "bernoulli", windows ="elliptic", alternative = "Low")
 #' print(scan)
 #' plot(scan, sf = provinces_spain)
-#'
 #'
 #' # Case 2: scan test multinomial
 #' data(provinces_spain)
@@ -138,15 +146,15 @@
 #' plot(scan, sf = FastFood.sf)
 #'
 #' # Case 4: DGP two categories
-#' N <- 500
+#' N <- 1500
 #' cx <- runif(N)
 #' cy <- runif(N)
 #' listw <- spdep::knearneigh(cbind(cx,cy), k = 10)
 #' p <- c(1/2,1/2)
 #' rho <- 0.5
 #' fx <- dgp.spq(p = p, listw = listw, rho = rho)
-#' scan <- scan.test(fx = fx, nsim = 9, case = "A", nv = 30, coor = cbind(cx,cy),
-#' distr = "bernoulli",windows="elliptic")
+#' scan <- scan.test(fx = fx, nsim = 99, case = "A", nv = 50, coor = cbind(cx,cy),
+#' distr = "bernoulli",windows="circular")
 #' print(scan)
 #' plot(scan)
 #'
@@ -164,11 +172,11 @@
 #' plot(scan)
 #' }
 
-
 scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case = NULL,
                       nv = NULL, nsim = NULL, distr = NULL, windows = "circular",
-                      alternative = "High", control = list()) {
+                      alternative = "High", minsize = 1, control = list()) {
 
+  # profvis({
   if (is.null(distr))
     stop("Select a distribution, bernoulli or multinomial")
 
@@ -176,7 +184,7 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
   distr <- match.arg(distr, c("bernoulli", "multinomial"))
   windows <- match.arg(windows, c("circular", "elliptic"))
 
-  # Selecciona los argumentos. Bien con (formula + data) o bien incluye la variable (fx)
+  # Select the arguments: (formula + data) or bien incluye la variable (fx)
   if (!is.null(formula) && !is.null(data)) {
     if (inherits(data, "Spatial")) data <- as(data, "sf")
     mfx <- get_all_vars(formula, data)[,1]
@@ -194,10 +202,10 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
   if (inherits(data, "sf")) sf = TRUE
 
   if (distr == "bernoulli"){
-  alternative <- match.arg(alternative, c("Low", "High", "Both"))
-  if (is.null(case)) {stop ("case argument must be an element of the factor")}
-  if (length(unique(mfx))!=2) {stop ("The factor mut be have 2 levels for bernoulli")}
-  case <- match.arg(case, unique(mfx))
+    alternative <- match.arg(alternative, c("Low", "High", "Both"))
+    if (is.null(case)) {stop ("case argument must be an element of the factor")}
+    if (length(unique(mfx))!=2) {stop ("The factor mut be have 2 levels for bernoulli")}
+    case <- match.arg(case, unique(mfx))
   }
   if (distr == "multinomial"){
     if (length(unique(mfx)) < 3) {stop ("The factor must be have almost 3 levels for multinomial")}
@@ -216,11 +224,14 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
   N <- length(mfx)
   if (is.null(nv))  nv <- trunc(N/2)
   if (!is.null(nv) && nv > trunc(N/2)) stop("nv must be lower than N/2")
+
+  if (minsize > nv/2)
+    stop("minsize must be lower than nv/2")
   ## Previus
 
   if (is.null(coor) &&
       sum(inherits(data, "sf")) > 0){
-  coor <- suppressWarnings(st_coordinates(st_centroid(data)))
+    coor <- suppressWarnings(st_coordinates(st_centroid(data)))
   }
 
   cx <- coor[,1]
@@ -228,7 +239,7 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
 
   if (windows=="circular"){
     nn <- suppressWarnings(cbind(1:N, knearneigh(cbind(cx, cy),
-                                k = (nv-1))$nn))
+                                                 k = (nv-1))$nn))
   }
   if (windows=="elliptic"){
     nn <- suppressWarnings(nn_ellipse(coor = cbind(cx,cy), nv = nv, p = 30)$ellipses)
@@ -242,124 +253,66 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
   #####################################
   ## Bernoulli
   if (distr == "bernoulli"){
-  oz <- t(apply(XF == case, 1 , cumsum))
-  nz <- t(matrix(rep(1:nv,dim(nn)[1]),nrow = nv))
-  O <- sum(mfx== case)
-  oznz <- oz/nz
-  OozNnz <- (O-oz)/(N-nz)
-  OozNnz.1 <- 1 - OozNnz
-  OozNnz.1[OozNnz.1 < 0] <- 0
-  a <- log(oznz)
-  a[a==-Inf]<-0
-  b <- log(1-oznz)
-  b[b==-Inf]<-0
-  c <- log(OozNnz)
-  c[c==-Inf]<-0
-  d <- log(OozNnz.1)
-  d[d==-Inf] <- 0
-  if (alternative == "Both"){
-  lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)
+    oz <- t(apply(XF == case, 1 , cumsum))
+    nz <- t(matrix(rep(1:nv,dim(nn)[1]),nrow = nv))
+    O <- sum(mfx== case)
+    oznz <- oz/nz
+    OozNnz <- (O-oz)/(N-nz)
+    OozNnz.1 <- 1 - OozNnz
+    OozNnz.1[OozNnz.1 < 0] <- 0
+    a <- log(oznz)
+    a[a==-Inf]<-0
+    b <- log(1-oznz)
+    b[b==-Inf]<-0
+    c <- log(OozNnz)
+    c[c==-Inf]<-0
+    d <- log(OozNnz.1)
+    d[d==-Inf] <- 0
+    if (alternative == "Both"){
+      lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)
+    }
+    if (alternative == "High"){
+      lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz>OozNnz)
+    }
+    if (alternative == "Low"){
+      lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz<OozNnz)
+    }
+    # lnlz <- oz*log(oz/nz) + (nz-oz)*log(1-oz/nz) + (O-oz)*log((O-oz)/(N-nz)) + (N-O-nz+oz)*log(1-(O-oz)/(N-nz))
+    lnlz0 <- exp(O*log(O) + (N-O)*log(N-O) - N*log(N))
+    lnlz <- log(lnlz/lnlz0)
+    lnlz[lnlz==-Inf] <- 0
+    lnlz[is.na(lnlz)] <- 0
+    # if (is.null(minsize)){
+    #   a <- which(lnlz == max(lnlz), arr.ind = TRUE)
+    #   MLC <- nn[a[1,1],1:a[1,2]]
+    #   loglik <- max(lnlz)} ## With out restrictions in the number of cases in the MLC
+    # else{
+    a <- which(lnlz[,minsize:nv] == max(lnlz[,minsize:nv]), arr.ind = TRUE)
+    MLC <- nn[a[1,1],1:(minsize+a[1,2])]
+    loglik <- max(lnlz[,minsize:nv])
+    # }
+    a2 <- a
+    cases.observ <- sum(mfx[MLC]== case)
+    cases.expect <- a[2]*(O/N)
+    cases.names <- names(table(mfx[MLC]))
+    AlternativeMLC <- list()
+    if (dim(a2)[1]>1){
+      for (fl in 2:dim(a2)[1]){
+        if (all.equal(sort(MLC),sort(nn[a2[fl,1],1:a2[fl,2]]))==FALSE){
+          AlternativeMLC[[fl-1]] <- nn[a2[fl,1],1:a2[fl,2]]}
+      }
+    }
+    if (length(AlternativeMLC) > 0) {
+      warning(paste0("A total of ",length(AlternativeMLC), " clusters has the same value of the statistic.
+    Report as MLC only the first.
+    Use summary() to get all clusters with the same loglik"))
+    }
   }
-  if (alternative == "High"){
-    lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz>OozNnz)
-  }
-  if (alternative == "Low"){
-    lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz<OozNnz)
-  }
-  # lnlz <- oz*log(oz/nz) + (nz-oz)*log(1-oz/nz) + (O-oz)*log((O-oz)/(N-nz)) + (N-O-nz+oz)*log(1-(O-oz)/(N-nz))
-  lnlz0 <- exp(O*log(O) + (N-O)*log(N-O) - N*log(N))
-  lnlz <- log(lnlz/lnlz0)
-  lnlz[lnlz==-Inf] <- 0
-  lnlz[is.na(lnlz)] <- 0
-
-  a <- which(lnlz == max(lnlz), arr.ind = TRUE)
-  if (dim(a)[1] > 1) {
-  warning(paste0("A total of ",dim(a)[1], " clusters has the same value of the statistic. Report as MLC only the first"))
-  a <- a[1,]
-  }
-  MLC <- nn[a[1],1:a[2]]
-  loglik <- max(lnlz)
-  cases.observ <- sum(mfx[MLC]== case)
-  cases.expect <- a[2]*(O/N)
-  }
-
   ## Multinomial
   if (distr == "multinomial"){
-  lnlz <- 0
-  case <- unique(mfx)
-  CZ <- t(matrix(rep(1:nv,dim(nn)[1]),nrow = nv))
-  for (f in 1:length(case)){
-  Ck <- sum(mfx == case[f])
-  CkZ <- t(apply(XF == case[f] , 1 , cumsum))
-  a <- log(CkZ/CZ)
-  a[a==-Inf] <- 0
-  b <- log((Ck-CkZ)/(N-CZ))
-  b[b==-Inf] <- 0
-  c <- log(Ck/N)
-  c[c==-Inf] <- 0
-  lnlz <- lnlz + (CkZ*a + (Ck-CkZ)*b - Ck*c)
-  }
-  lnlz[is.na(lnlz)] <- 0
-  a <- which(lnlz == max(lnlz), arr.ind = TRUE)
-  if (dim(a)[1] > 1) {
-    warning(paste0("A total of ",dim(a)[1], " clusters has the same value of the statistic. Report as MLC only the first"))
-    a <- a[1,]
-  }
-
-  MLC <- nn[a[1],1:a[2]]
-  loglik <- max(lnlz)
-  cases.observ <- addmargins(table(mfx[MLC]))
-  cases.expect <- addmargins(table(mfx)*length(MLC)/N)
-  }
-
-
-  #####################################
-  ## Scan mc
-  #####################################
-  if (distr == "bernoulli"){
-  if (!is.null(seedinit)) set.seed(seedinit)
-  scan.mc <- rep(0,nsim)
-  for (f in 1:nsim){
-  fxp <- mfx[sample(N)]
-  XF <- matrix(fxp[nn], ncol = nv, nrow = dim(nn)[1])
-  oz <- t(apply(XF==case, 1 , cumsum))
-  oznz <- oz/nz
-  OozNnz <- (O-oz)/(N-nz)
-  OozNnz.1 <- 1 - OozNnz
-  OozNnz.1[OozNnz.1 < 0] <- 0
-  a <- log(oznz)
-  a[a==-Inf] <- 0
-  b <- log(1-oznz)
-  b[b==-Inf] <- 0
-  c <- log(OozNnz)
-  c[c==-Inf] <- 0
-  d <- log(OozNnz.1)
-  d[d==-Inf] <- 0
-  if (alternative == "Both"){
-    lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)
-  }
-  if (alternative == "High"){
-    lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz > OozNnz)
-  }
-  if (alternative == "Low"){
-    lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz < OozNnz)
-  }
-  lnlz <- log(lnlz/lnlz0)
-  lnlz[lnlz==-Inf] <- 0
-  lnlz[is.na(lnlz)] <- 0
-  scan.mc[f] <- max(lnlz)
-  }
-  }
-
-  if (distr == "multinomial"){
-  if (!is.null(seedinit)) set.seed(seedinit)
-  scan.mc <- rep(0,nsim)
-  case <- unique(mfx)
-  CZ <- t(matrix(rep(1:nv,dim(nn)[1]),nrow = nv))
-  for (k in 1:nsim){
-  fxp <- mfx[sample(N)]
-  XF <- matrix(fxp[nn], ncol = nv, nrow = dim(nn)[1])
-  lnlz <- 0
+    lnlz <- 0
+    case <- unique(mfx)
+    CZ <- t(matrix(rep(1:nv,dim(nn)[1]),nrow = nv))
     for (f in 1:length(case)){
       Ck <- sum(mfx == case[f])
       CkZ <- t(apply(XF == case[f] , 1 , cumsum))
@@ -372,23 +325,196 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
       lnlz <- lnlz + (CkZ*a + (Ck-CkZ)*b - Ck*c)
     }
     lnlz[is.na(lnlz)] <- 0
-    scan.mc[k] <- max(lnlz)
+    # Condición para seleccionar el MLC dependiendo si se exige un num min de observaciones
+    # if (is.null(minsize)){
+      # a <- which(lnlz == max(lnlz), arr.ind = TRUE)
+      # MLC <- nn[a[1,1],1:a[1,2]]
+      # loglik <- max(lnlz) ## With out restrictions in the number of cases in the MLC
+      # } else {
+      a <- which(lnlz[,minsize:nv] == max(lnlz[,minsize:nv]), arr.ind = TRUE)
+      MLC <- nn[a[1,1],1:(minsize-1+a[1,2])]
+      loglik <- max(lnlz[,minsize:nv])
+
+    a2 <- a
+    # if (dim(a)[1] > 1) {
+    #   a <- a[1,]
+    # }
+    cases.observ <- addmargins(table(mfx[MLC]))
+    cases.expect <- addmargins(table(mfx)*length(MLC)/N)
+    cases.names <- names(table(mfx[MLC]))
+    # Alternative clusters with the same loglik that MLC
+    # Es posible encontrar más de un cluster con la misma loglik
+    # Lo normal es que estén formados por las mismas observaciones
+    # la siguiente lineas chequean si todos son iguales
+    # Si no los son los llama alternativos y son listados
+    AlternativeMLC <- list()
+    if (dim(a2)[1]>1){
+      for (fl in 2:dim(a2)[1]){
+        if (all.equal(sort(MLC),sort(nn[a2[fl,1],1:a2[fl,2]]))==FALSE){
+          AlternativeMLC[[fl-1]] <- nn[a2[fl,1],1:a2[fl,2]]}
+      }
+    }
+
+    ####################################
+    if (length(AlternativeMLC) > 0) {
+      warning(paste0("A total of ",length(AlternativeMLC), " clusters has the same value of the statistic.
+    Report as MLC only the first.
+    Use summary() to get all clusters with the same loglik"))
+    }
   }
+
+  #####################################
+  ## Scan mc
+  #####################################
+  if (distr == "bernoulli"){
+    if (!is.null(seedinit)) set.seed(seedinit)
+    scan.mc <- rep(0,nsim)
+
+    # cl <- parallel::makeCluster(detectCores())
+    # doParallel::registerDoParallel(cl)
+    # scan.mc <- foreach(1:nsim,.combine = rbind) %dopar% {
+    #   fxp <- mfx[sample(N)]
+    #   XF <- matrix(fxp[nn], ncol = nv, nrow = dim(nn)[1])
+    #   oz <- t(apply(XF==case, 1 , cumsum))
+    #   oznz <- oz/nz
+    #   OozNnz <- (O-oz)/(N-nz)
+    #   OozNnz.1 <- 1 - OozNnz
+    #   OozNnz.1[OozNnz.1 < 0] <- 0
+    #   a <- log(oznz)
+    #   a[a==-Inf] <- 0
+    #   b <- log(1-oznz)
+    #   b[b==-Inf] <- 0
+    #   c <- log(OozNnz)
+    #   c[c==-Inf] <- 0
+    #   d <- log(OozNnz.1)
+    #   d[d==-Inf] <- 0
+    #   if (alternative == "Both"){
+    #     lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)
+    #   }
+    #   if (alternative == "High"){
+    #     lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz > OozNnz)
+    #   }
+    #   if (alternative == "Low"){
+    #     lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz < OozNnz)
+    #   }
+    #   lnlz <- log(lnlz/lnlz0)
+    #   lnlz[lnlz==-Inf] <- 0
+    #   lnlz[is.na(lnlz)] <- 0
+    #   # scan.mc[f] <- max(lnlz)
+    #   scan.mc <- as.numeric(max(lnlz))
+    # }
+    for (f in 1:nsim){
+      fxp <- mfx[sample(N)]
+      XF <- matrix(fxp[nn], ncol = nv, nrow = dim(nn)[1])
+      oz <- t(apply(XF==case, 1 , cumsum))
+      oznz <- oz/nz
+      OozNnz <- (O-oz)/(N-nz)
+      OozNnz.1 <- 1 - OozNnz
+      OozNnz.1[OozNnz.1 < 0] <- 0
+      a <- log(oznz)
+      a[a==-Inf] <- 0
+      b <- log(1-oznz)
+      b[b==-Inf] <- 0
+      c <- log(OozNnz)
+      c[c==-Inf] <- 0
+      d <- log(OozNnz.1)
+      d[d==-Inf] <- 0
+      if (alternative == "Both"){
+        lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)
+      }
+      if (alternative == "High"){
+        lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz > OozNnz)
+      }
+      if (alternative == "Low"){
+        lnlz <- exp(oz*a + (nz-oz)*b + (O-oz)*c + (N-O-nz+oz)*d)*(oznz < OozNnz)
+      }
+      lnlz <- log(lnlz/lnlz0)
+      lnlz[lnlz==-Inf] <- 0
+      lnlz[is.na(lnlz)] <- 0
+      scan.mc[f] <- max(lnlz)
+    }
+  }
+
+  if (distr == "multinomial"){
+    if (!is.null(seedinit)) set.seed(seedinit)
+    scan.mc <- rep(0,nsim)
+    case <- unique(mfx)
+    CZ <- t(matrix(rep(1:nv,dim(nn)[1]),nrow = nv))
+    for (k in 1:nsim){
+      fxp <- mfx[sample(N)]
+      XF <- matrix(fxp[nn], ncol = nv, nrow = dim(nn)[1])
+      lnlz <- 0
+      for (f in 1:length(case)){
+        Ck <- sum(mfx == case[f])
+        CkZ <- t(apply(XF == case[f] , 1 , cumsum))
+        a <- log(CkZ/CZ)
+        a[a==-Inf] <- 0
+        b <- log((Ck-CkZ)/(N-CZ))
+        b[b==-Inf] <- 0
+        c <- log(Ck/N)
+        c[c==-Inf] <- 0
+        lnlz <- lnlz + (CkZ*a + (Ck-CkZ)*b - Ck*c)
+      }
+      lnlz[is.na(lnlz)] <- 0
+      scan.mc[k] <- max(lnlz[,minsize:nv])
+
+    }
   }
   p.value <- sum(scan.mc > loglik)/(nsim + 1)
   names(loglik) <- "scan-loglik"
 
+  ####################################
+  #### Looking for secondary clusters
+  ####################################
+  loglik.second <- NULL
+  MLC2 <- list()
+  mlc <- MLC
+
+  for (f in 1:5){ # Como máximo busco 5 clusteres secundarios
+    # qq <- nn
+    # # Identifico en nn todas las observaciones que contienen algún elemento del MLC
+    # pp <- qq[,1] %in% mlc
+    # for (ii in 2:dim(qq)[2]){
+    #   pp <- cbind(pp,qq[,ii] %in% mlc)
+    # }
+    pp <- matrix(nn %in% mlc, ncol = nv)
+    # Pongo NA si las observación estan en el MLC
+    pp[pp == TRUE] <- NA
+    pp <- t(apply(pp, 1, cumsum)) # con cumcum se consigue poner NA
+    LNLZ <- lnlz
+    LNLZ[is.na(pp)] <- NA
+    loglik.second[f] <- max(LNLZ[,minsize:nv], na.rm = TRUE)
+    cc <- which(LNLZ == max(LNLZ[,minsize:nv], na.rm = TRUE), arr.ind = TRUE)
+    # Este es el cluster secundario
+    MLC2[[f]] <- nn[cc[1,1],1:(minsize+cc[1,2])]
+    mlc <- c(mlc,nn[cc[1,1],1:(minsize+cc[1,2])])
+  }
+  rm(pp,LNLZ,cc,mlc)
+
+  ####################################
+  ## p-values for secondary clusters
+  p.value.secondary <- NULL
+  for (f in 1:5){
+    p.value.secondary[f] <- sum(scan.mc > loglik.second[f])/(nsim + 1)
+  }
+
+  ####################################
+
   if (distr == "bernoulli"){
-  vec <- matrix(c(length(MLC), cases.expect, cases.observ))
-  rownames(vec) <- c("Total observations in the MLC =  ","Expected cases in the MLC =","Observed cases in the MLC =")
-  colnames(vec) <- ""
-  scan <- list(method = paste("Scan test. Distribution: ",distr),
-              fx = mfx, MLC = MLC, statistic = loglik, N = N, estimate = vec, nn = nn, nv = nv, coor = coor.input,
-              p.value = p.value, nsim = nsim, data.name = data.name, distr = distr,
-              case = case,
-              alternative = alternative,
-              cases.expect = cases.expect,
-              cases.observ = cases.observ, sf = sf)
+    vec <- matrix(c(length(MLC), cases.expect, cases.observ))
+    rownames(vec) <- c("Total observations in the MLC =  ","Expected cases in the MLC =","Observed cases in the MLC =")
+    colnames(vec) <- ""
+    scan <- list(method = paste("Scan test. Distribution: ",distr),
+                 fx = mfx, MLC = MLC, statistic = loglik, N = N, estimate = vec, nn = nn, nv = nv, coor = coor.input,
+                 p.value = p.value, nsim = nsim, data.name = data.name, distr = distr,
+                 scan.mc = scan.mc, minsize = minsize,
+                 secondary.clusters = MLC2, loglik.second = loglik.second, p.value.secondary = p.value.secondary,
+                 case = case,
+                 alternative = alternative,
+                 cases.expect = cases.expect,
+                 cases.observ = cases.observ,
+                 cases.names = cases.names,
+                 sf = sf)
   }
 
   if (distr == "multinomial"){
@@ -397,12 +523,16 @@ scan.test <- function(formula = NULL, data = NULL, fx = NULL, coor = NULL, case 
     scan <- list(method = paste("Scan test. Distribution: ",distr),
                  fx = mfx, MLC = MLC, statistic = loglik, N = N, estimate = vec, nn = nn, nv = nv, coor = coor.input,
                  p.value = p.value, nsim = nsim, data.name = data.name, distr = distr,
+                 scan.mc = scan.mc, minsize = minsize,
+                 secondary.clusters = MLC2, loglik.second = loglik.second, p.value.secondary = p.value.secondary,
                  cases.expect = cases.expect,
-                 cases.observ = cases.observ, sf = sf)
+                 cases.observ = cases.observ,
+                 cases.names = cases.names,
+                 sf = sf)
   }
 
 
   class(scan) <- c("htest","scantest")
   scan
-
+ # })
 }

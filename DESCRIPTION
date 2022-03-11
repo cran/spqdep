@@ -1,9 +1,9 @@
 Package: spqdep
 Type: Package
-Title: Testing for Spatial Structure of Qualitative Data in Cross
-        Section
-Version: 0.1.0
-Date: 2022-01-21
+Title: Testing for Structure of Qualitative Data in Spatial Cross
+        Sectional Panels
+Version: 0.1.1
+Date: 2022-03-11
 Authors@R: 
     c(person("Fernando", "Lopez", email = "fernando.lopez@upct.es", 
                   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-5397-9748")),
@@ -17,7 +17,7 @@ Maintainer: Fernando Lopez <fernando.lopez@upct.es>
 Description: Testing for spatial structure of qualitative data in cross section. The list of functions includes join-count test, Q test, scan test, similarity test and spatial runs test. The methodology of these models can be found in <doi:10.1007/s10109-009-0100-1> and <doi:10.1080/13658816.2011.586327>.
 LazyData: true
 Encoding: UTF-8
-License: GPL-3
+License: MIT + file LICENSE
 Depends: R (>= 3.5), methods (>= 3.5), stats (>= 3.5)
 Imports: broom (>= 0.7.2), dplyr (>= 1.0.2), ggplot2 (>= 3.3.0), gt (>=
         0.2.2), gtools (>= 3.8.2), gridExtra (>= 2.3), igraph (>=
@@ -29,11 +29,12 @@ Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 Language: en-US
+URL: https://f8l5h9.github.io/spqdep/
 NeedsCompilation: no
-Packaged: 2022-01-27 20:07:59 UTC; Falopez
+Packaged: 2022-03-11 16:14:54 UTC; fernandoair
 Author: Fernando Lopez [aut, cre] (<https://orcid.org/0000-0002-5397-9748>),
   Roman Minguez [aut] (<https://orcid.org/0000-0002-0490-3181>),
   Antonio Paez [aut] (<https://orcid.org/0000-0001-6912-9919>),
   Manuel Ruiz [aut] (<https://orcid.org/0000-0001-9228-6410>)
 Repository: CRAN
-Date/Publication: 2022-01-28 21:00:02 UTC
+Date/Publication: 2022-03-11 16:40:02 UTC
