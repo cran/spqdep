@@ -1,7 +1,7 @@
 #' Selection of fast food restaurants in Toronto
 #'
 #' A simple feature (sf) dataframe containing the locations of a selection of fast food restaurants
-#' in Toronto (data are from 2008). The data are projected using EPSG: 26917 (WGS 84/UTM Zone 17N).
+#' in the city of Toronto, Canada (data are from 2008). The data are projected using EPSG: 26917 (WGS 84/UTM Zone 17N).
 #'
 #' @docType data
 #'
@@ -11,7 +11,8 @@
 #'
 #' \describe{
 #'   \item{ID}{Unique identifier of record.}
-#'   \item{Class}{Factor with 3 types of fast food restaurants: Chicken, Hamburger, Pizza, Sub.}
+#'   \item{Class}{Factor with 3 types of fast food restaurants:
+#'   [P]izza, [S]andwich, and [H]amburger}
 #'   \item{geometry}{Geometry of simple features.}
 #' }
 #'
@@ -52,7 +53,7 @@
 #'
 #' @references
 #'   \itemize{
-#'     \item Paez, A., Ruiz, M, Lopez, F. & Logan, J. (2012). \emph{Measuring Ethnic Clustering
+#'     \item Paez, A., Ruiz, M., Lopez, F. & Logan, J. (2012). \emph{Measuring Ethnic Clustering
 #'      and Exposure with the Q Statistic: An Exploratory Analysis of Irish, Germans, and Yankees in 1880 Newark.}. Annals of the Association of American Geographers.
 #'   }
 #' @examples
@@ -89,12 +90,12 @@
 #' @usage data(provinces_spain)
 #' @source Instituto Nacional de Estadistica http://www.ine.es/
 #' @source Climatic data: Agencia Estatal de Meteorologia http://www.aemet.es/
-#' @source Páez et al. (2020) \url{https://onlinelibrary.wiley.com/doi/full/10.1111/gean.12241}
+#' @source Páez et al. (2020)
 #'
 #' @references
 #'   \itemize{
-#'     \item Paez, A., Lopez, F. A., Menezes, T., Cavalcanti, R., & Pitta, M. (2020). \emph{A Spatio‐Temporal Analysis of
-#'      the Environmental Correlates of COVID‐19 Incidence in Spain.}. Geographical Analysis. 53(3) 397-421
+#'     \item Paez, A., Lopez, F.A., Menezes, T., Cavalcanti, R., & Pitta, M. (2020). A Spatio‐Temporal Analysis of
+#'      the Environmental Correlates of COVID‐19 Incidence in Spain. \emph{Geographical Analysis}. 53(3) 397-421
 #'   }
 #' @examples
 #'  data(provinces_spain)
@@ -105,9 +106,9 @@
 #'
 #' A simple features object square regular lattice 16x16.
 #'
-#' @format A simple features dataframe with 256 rows and 1 columns:
+#' @format A simple features dataframe with 256 rows and 1 column:
 #' \describe{
-#'   \item{BW}{A factor with . Black and White}
+#'   \item{BW}{A factor with two levels: Black and White}
 #' }
 #'
 #' @docType data
@@ -120,6 +121,9 @@
 #'   \itemize{
 #'     \item Boots, B. (2003). Developing local measures of spatial association
 #'     for categorical data. Journal of Geographical Systems, 5(2), 139-160.
+#'     \item Upton G, Fingleton B (1985) Spatial data analysis by example.
+#'     Volume 1: Point pattern and quantitative data.
+#'     John Wiley & Sons, Chichester
 #'   }
 #' @examples
 #'  data(Boots.sf)

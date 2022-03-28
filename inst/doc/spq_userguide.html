@@ -14,11 +14,10 @@
 <meta name="author" content="Antonio Páez, McMaster University (Canada)" />
 <meta name="author" content="Manuel Ruiz, Technical University of Cartagena (Spain)      " />
 
-<meta name="date" content="2022-03-11" />
+<meta name="date" content="2022-03-28" />
 
 <title>spqdep user guide</title>
 
-<script src="spq_userguide_files/header-attrs-2.12/header-attrs.js"></script>
 <script src="spq_userguide_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="spq_userguide_files/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -282,7 +281,7 @@ div.tocify {
 <h4 class="author">Román Mínguez, University of Castilla-La Mancha (Spain)</h4>
 <h4 class="author">Antonio Páez, McMaster University (Canada)</h4>
 <h4 class="author">Manuel Ruiz, Technical University of Cartagena (Spain) <br> <br> <br></h4>
-<h4 class="date">2022-03-11 <br></h4>
+<h4 class="date">2022-03-28 <br></h4>
 
 </div>
 
@@ -298,7 +297,7 @@ library(ggplot2)</code></pre>
 <h2><span class="header-section-number">1.1</span> Datasets</h2>
 <p>Two data sets will be used as examples in this guide:</p>
 <ul>
-<li><p><strong>provinces_spain</strong>: The division of Spain into provinces. It is a multypolygon geometry with isolated provinces (islands without neighbouring provinces). See by example <span class="citation"><a href="#ref-paez2021" role="doc-biblioref">Paez et al.</a> (<a href="#ref-paez2021" role="doc-biblioref">2021</a>)</span>.</p></li>
+<li><p><strong>provinces_spain</strong>: The division of Spain into provinces. It is a multypolygon geometry with isolated provinces (islands without neighbouring provinces). See by example Paez et al. 2021.</p></li>
 <li><p><strong>FastFood.sf</strong>: The data set used as example in <span class="citation"><a href="#ref-ruiz2010" role="doc-biblioref">Ruiz, López, and Páez</a> (<a href="#ref-ruiz2010" role="doc-biblioref">2010</a>)</span>. It is a geometry of points.</p></li>
 </ul>
 <p>The package is install like usual and the dataset can be loaded using the next code</p>
@@ -887,8 +886,8 @@ summary(q.test.mc)</code></pre>
     <tr class="gt_group_heading_row">
       <td colspan="9" class="gt_group_heading">V1 - standard-permutations</td>
     </tr>
-    <tr class="gt_row_group_first"><td class="gt_row gt_right">134.16</td>
-<td class="gt_row gt_right">0.49700</td>
+    <tr class="gt_row_group_first"><td class="gt_row gt_right">41.51</td>
+<td class="gt_row gt_right">0.12900</td>
 <td class="gt_row gt_right">3</td>
 <td class="gt_row gt_right">100</td>
 <td class="gt_row gt_right">3</td>
@@ -899,8 +898,8 @@ summary(q.test.mc)</code></pre>
     <tr class="gt_group_heading_row">
       <td colspan="9" class="gt_group_heading">V1 - equivalent-combinations</td>
     </tr>
-    <tr class="gt_row_group_first"><td class="gt_row gt_right">17.39</td>
-<td class="gt_row gt_right">0.45800</td>
+    <tr class="gt_row_group_first"><td class="gt_row gt_right">32.80</td>
+<td class="gt_row gt_right">0.03600</td>
 <td class="gt_row gt_right">3</td>
 <td class="gt_row gt_right">100</td>
 <td class="gt_row gt_right">3</td>
@@ -1349,9 +1348,9 @@ summary(q.test.mc)</code></pre>
     <tr class="gt_group_heading_row">
       <td colspan="11" class="gt_group_heading">V1 - standard-permutations</td>
     </tr>
-    <tr class="gt_row_group_first"><td class="gt_row gt_right">94.53</td>
+    <tr class="gt_row_group_first"><td class="gt_row gt_right">30.10</td>
 <td class="gt_row gt_right">26</td>
-<td class="gt_row gt_right">0.00000</td>
+<td class="gt_row gt_right">0.26354</td>
 <td class="gt_row gt_right">3</td>
 <td class="gt_row gt_right">100</td>
 <td class="gt_row gt_right">3</td>
@@ -1363,9 +1362,9 @@ summary(q.test.mc)</code></pre>
     <tr class="gt_group_heading_row">
       <td colspan="11" class="gt_group_heading">V1 - equivalent-combinations</td>
     </tr>
-    <tr class="gt_row_group_first"><td class="gt_row gt_right">11.91</td>
+    <tr class="gt_row_group_first"><td class="gt_row gt_right">16.73</td>
 <td class="gt_row gt_right">9</td>
-<td class="gt_row gt_right">0.21841</td>
+<td class="gt_row gt_right">0.05318</td>
 <td class="gt_row gt_right">3</td>
 <td class="gt_row gt_right">100</td>
 <td class="gt_row gt_right">3</td>
@@ -1450,7 +1449,7 @@ qmap &lt;- Q.map.test(formula = formula, data = dt, coor = coor, m = m, r = r, t
 ##  Ratio Symbolized observations/Num symbols = 4.6
 ## 
 ## data:  QY1 and QY2
-## QE = 147.16, df = 9, p-value &lt; 2.2e-16
+## QE = 148.71, df = 9, p-value &lt; 2.2e-16
 ## alternative hypothesis: two.sided</code></pre>
 <ul>
 <li>The  method obtains the distribution of symbols with the confidence intervals specified by the user.</li>
@@ -1484,11 +1483,11 @@ srq &lt;- sp.runs.test(fx = fx, listw = listw)</code></pre>
 ##  version
 ## 
 ## data:  mxf
-## sp.runs test = -0.90434, p-value = 0.3658
+## sp.runs test = -0.81833, p-value = 0.4132
 ## alternative hypothesis: two.sided
 ## sample estimates:
 ##          Total runs     Mean total runs Variance total runs 
-##            275.0000            285.5152            135.1986</code></pre>
+##            276.0000            285.5152            135.1986</code></pre>
 <pre class="r"><code>plot(srq)</code></pre>
 <p><img src="spq_userguide_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
@@ -1509,106 +1508,106 @@ srq &lt;- sp.runs.test(fx = fx, listw = listw)</code></pre>
 </ul>
 <pre class="r"><code>print(lsrq)</code></pre>
 <pre><code>##     runs.i      E.i     Std.i    z.value    p.value
-## 1        4 2.855152 0.8722689  1.3124950 0.90532341
-## 2        1 2.855152 0.8722689 -2.1268116 0.01671787
+## 1        2 2.855152 0.8722689 -0.9803761 0.16345026
+## 2        3 2.855152 0.8722689  0.1660594 0.56594492
 ## 3        3 2.855152 0.8722689  0.1660594 0.56594492
 ## 4        2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 5        4 2.855152 0.8722689  1.3124950 0.90532341
-## 6        2 2.855152 0.8722689 -0.9803761 0.16345026
-## 7        4 2.855152 0.8722689  1.3124950 0.90532341
-## 8        3 2.855152 0.8722689  0.1660594 0.56594492
+## 6        3 2.855152 0.8722689  0.1660594 0.56594492
+## 7        3 2.855152 0.8722689  0.1660594 0.56594492
+## 8        2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 9        3 2.855152 0.8722689  0.1660594 0.56594492
 ## 10       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 11       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 12       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 12       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 13       4 2.855152 0.8722689  1.3124950 0.90532341
-## 14       3 2.855152 0.8722689  0.1660594 0.56594492
+## 14       1 2.855152 0.8722689 -2.1268116 0.01671787
 ## 15       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 16       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 17       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 18       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 19       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 20       4 2.855152 0.8722689  1.3124950 0.90532341
+## 16       3 2.855152 0.8722689  0.1660594 0.56594492
+## 17       3 2.855152 0.8722689  0.1660594 0.56594492
+## 18       4 2.855152 0.8722689  1.3124950 0.90532341
+## 19       3 2.855152 0.8722689  0.1660594 0.56594492
+## 20       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 21       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 22       4 2.855152 0.8722689  1.3124950 0.90532341
 ## 23       4 2.855152 0.8722689  1.3124950 0.90532341
 ## 24       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 25       4 2.855152 0.8722689  1.3124950 0.90532341
-## 26       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 27       3 2.855152 0.8722689  0.1660594 0.56594492
-## 28       4 2.855152 0.8722689  1.3124950 0.90532341
-## 29       4 2.855152 0.8722689  1.3124950 0.90532341
+## 26       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 27       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 28       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 29       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 30       3 2.855152 0.8722689  0.1660594 0.56594492
-## 31       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 31       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 32       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 33       3 2.855152 0.8722689  0.1660594 0.56594492
-## 34       3 2.855152 0.8722689  0.1660594 0.56594492
-## 35       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 36       4 2.855152 0.8722689  1.3124950 0.90532341
-## 37       4 2.855152 0.8722689  1.3124950 0.90532341
+## 33       4 2.855152 0.8722689  1.3124950 0.90532341
+## 34       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 35       3 2.855152 0.8722689  0.1660594 0.56594492
+## 36       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 37       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 38       3 2.855152 0.8722689  0.1660594 0.56594492
-## 39       4 2.855152 0.8722689  1.3124950 0.90532341
-## 40       4 2.855152 0.8722689  1.3124950 0.90532341
-## 41       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 42       4 2.855152 0.8722689  1.3124950 0.90532341
-## 43       3 2.855152 0.8722689  0.1660594 0.56594492
-## 44       4 2.855152 0.8722689  1.3124950 0.90532341
+## 39       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 40       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 41       3 2.855152 0.8722689  0.1660594 0.56594492
+## 42       3 2.855152 0.8722689  0.1660594 0.56594492
+## 43       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 44       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 45       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 46       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 47       3 2.855152 0.8722689  0.1660594 0.56594492
-## 48       3 2.855152 0.8722689  0.1660594 0.56594492
+## 46       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 47       4 2.855152 0.8722689  1.3124950 0.90532341
+## 48       1 2.855152 0.8722689 -2.1268116 0.01671787
 ## 49       3 2.855152 0.8722689  0.1660594 0.56594492
-## 50       4 2.855152 0.8722689  1.3124950 0.90532341
-## 51       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 52       3 2.855152 0.8722689  0.1660594 0.56594492
-## 53       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 54       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 55       3 2.855152 0.8722689  0.1660594 0.56594492
-## 56       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 50       3 2.855152 0.8722689  0.1660594 0.56594492
+## 51       4 2.855152 0.8722689  1.3124950 0.90532341
+## 52       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 53       3 2.855152 0.8722689  0.1660594 0.56594492
+## 54       3 2.855152 0.8722689  0.1660594 0.56594492
+## 55       4 2.855152 0.8722689  1.3124950 0.90532341
+## 56       4 2.855152 0.8722689  1.3124950 0.90532341
 ## 57       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 58       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 59       4 2.855152 0.8722689  1.3124950 0.90532341
-## 60       3 2.855152 0.8722689  0.1660594 0.56594492
-## 61       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 62       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 63       3 2.855152 0.8722689  0.1660594 0.56594492
-## 64       3 2.855152 0.8722689  0.1660594 0.56594492
-## 65       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 60       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 61       3 2.855152 0.8722689  0.1660594 0.56594492
+## 62       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 63       4 2.855152 0.8722689  1.3124950 0.90532341
+## 64       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 65       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 66       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 67       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 68       3 2.855152 0.8722689  0.1660594 0.56594492
-## 69       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 68       4 2.855152 0.8722689  1.3124950 0.90532341
+## 69       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 70       4 2.855152 0.8722689  1.3124950 0.90532341
 ## 71       3 2.855152 0.8722689  0.1660594 0.56594492
-## 72       3 2.855152 0.8722689  0.1660594 0.56594492
-## 73       4 2.855152 0.8722689  1.3124950 0.90532341
+## 72       4 2.855152 0.8722689  1.3124950 0.90532341
+## 73       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 74       3 2.855152 0.8722689  0.1660594 0.56594492
-## 75       3 2.855152 0.8722689  0.1660594 0.56594492
+## 75       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 76       3 2.855152 0.8722689  0.1660594 0.56594492
-## 77       4 2.855152 0.8722689  1.3124950 0.90532341
-## 78       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 79       4 2.855152 0.8722689  1.3124950 0.90532341
-## 80       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 77       3 2.855152 0.8722689  0.1660594 0.56594492
+## 78       3 2.855152 0.8722689  0.1660594 0.56594492
+## 79       3 2.855152 0.8722689  0.1660594 0.56594492
+## 80       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 81       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 82       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 83       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 84       3 2.855152 0.8722689  0.1660594 0.56594492
-## 85       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 86       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 87       4 2.855152 0.8722689  1.3124950 0.90532341
-## 88       4 2.855152 0.8722689  1.3124950 0.90532341
+## 85       3 2.855152 0.8722689  0.1660594 0.56594492
+## 86       3 2.855152 0.8722689  0.1660594 0.56594492
+## 87       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 88       3 2.855152 0.8722689  0.1660594 0.56594492
 ## 89       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 90       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 91       1 2.855152 0.8722689 -2.1268116 0.01671787
+## 91       2 2.855152 0.8722689 -0.9803761 0.16345026
 ## 92       3 2.855152 0.8722689  0.1660594 0.56594492
-## 93       4 2.855152 0.8722689  1.3124950 0.90532341
-## 94       3 2.855152 0.8722689  0.1660594 0.56594492
-## 95       4 2.855152 0.8722689  1.3124950 0.90532341
-## 96       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 97       1 2.855152 0.8722689 -2.1268116 0.01671787
-## 98       2 2.855152 0.8722689 -0.9803761 0.16345026
-## 99       3 2.855152 0.8722689  0.1660594 0.56594492
-## 100      3 2.855152 0.8722689  0.1660594 0.56594492</code></pre>
+## 93       3 2.855152 0.8722689  0.1660594 0.56594492
+## 94       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 95       3 2.855152 0.8722689  0.1660594 0.56594492
+## 96       3 2.855152 0.8722689  0.1660594 0.56594492
+## 97       4 2.855152 0.8722689  1.3124950 0.90532341
+## 98       3 2.855152 0.8722689  0.1660594 0.56594492
+## 99       2 2.855152 0.8722689 -0.9803761 0.16345026
+## 100      2 2.855152 0.8722689 -0.9803761 0.16345026</code></pre>
 <ul>
 <li>The  method identify the localization with values of local test significant.</li>
 </ul>
@@ -1650,7 +1649,8 @@ plot(lsrq, sf = provinces_spain, sig = 0.10)</code></pre>
 <li>For qualitative spatial process with two categories the bernoulli scan test is obtain with the next code</li>
 </ul>
 <pre class="r"><code>formula &lt;- ~ Male2Female
-scan.spain &lt;- spqdep::scan.test(formula = formula, data = provinces_spain, case=&quot;men&quot;, nsim = 99, distr = &quot;bernoulli&quot;)
+scan.spain &lt;- spqdep::scan.test(formula = formula, data = provinces_spain, 
+                                case=&quot;men&quot;, nsim = 99, distr = &quot;bernoulli&quot;)
 print(scan.spain)</code></pre>
 <pre><code>## 
 ##  Scan test. Distribution: bernoulli
@@ -1663,6 +1663,30 @@ print(scan.spain)</code></pre>
 ## Total observations in the MLC =   17.00
 ## Expected cases in the MLC =       11.84
 ## Observed cases in the MLC =       16.00</code></pre>
+<div id="scan-test-with-flexible-windows" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Scan test with flexible windows</h3>
+<ul>
+<li>The flexible windows is an option. Note that is slow. Consider maximum nv of 12.</li>
+</ul>
+<pre class="r"><code>listw &lt;- spdep::poly2nb(provinces_spain, queen = FALSE)
+## although coordinates are longitude/latitude, st_intersects assumes that they are planar
+scan.spain &lt;- spqdep::scan.test(formula = formula, data = provinces_spain, 
+                                case=&quot;men&quot;, nsim = 99, windows = &quot;flexible&quot;, 
+                                listw = listw, nv = 6, distr = &quot;bernoulli&quot;)
+## +++++end
+print(scan.spain)
+## 
+##  Scan test. Distribution: bernoulli
+## 
+## data:  Male2Female
+## scan-loglik = 1.9464, p-value &lt; 2.2e-16
+## alternative hypothesis: High
+## sample estimates:
+##                                         
+## Total observations in the MLC =     6.00
+## Expected cases in the MLC =       370.74
+## Observed cases in the MLC =         6.00</code></pre>
+</div>
 </div>
 <div id="scan-multinomial" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> scan multinomial</h2>
@@ -1760,14 +1784,14 @@ print(scan.fastfood)</code></pre>
 ## p-value.........................: 0.98
 ## Location IDs included..................:  78 365 668 228 170 857 306 708 651 187</code></pre>
 <pre class="r"><code>plot(scan.spain, sf = provinces_spain)</code></pre>
-<p><img src="spq_userguide_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <pre class="r"><code>plot(scan.fastfood, sf = FastFood.sf)</code></pre>
-<p><img src="spq_userguide_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="spq_userguide_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 </div>
 </div>
 <div id="similarity-test" class="section level1" number="6">
 <h1><span class="header-section-number">6</span> Similarity test</h1>
-<p>The <span class="citation"><a href="#ref-Farber2014" role="doc-biblioref">Farber, Marin, and Páez</a> (<a href="#ref-Farber2014" role="doc-biblioref">2014</a>)</span> paper develop the similarity test</p>
+<p>The Farber et al. (2014) paper develop the similarity test</p>
 <div id="simiarity-test" class="section level2" number="6.1">
 <h2><span class="header-section-number">6.1</span> Simiarity test</h2>
 <p>The  function calculates the similarity test for both asymptotic distribution and permutational resampling.</p>
@@ -2775,20 +2799,16 @@ jc1 &lt;- jc.test(formula = f1, data = provinces_spain, distr = &quot;asymptotic
 </div>
 </div>
 </div>
-<div id="references" class="section level1 unnumbered">
-<h1>References</h1>
+<div id="references" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> References</h1>
+<p>Farber, S., Marin, M. R., &amp; Páez, A. (2015). Testing for spatial independence using similarity relations. Geographical Analysis, 47(2), 97-120.</p>
+<p>Paez, A., Lopez, F. A., Menezes, T., Cavalcanti, R., &amp; Pitta, M. G. D. R. (2021). A spatio‐temporal analysis of the environmental correlates of COVID‐19 incidence in Spain. Geographical analysis, 53(3), 397-421.</p>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Farber2014" class="csl-entry">
-Farber, Steven, Manuel Ruiz Marin, and Antonio Páez. 2014. <span>“Testing for Spatial Independence Using Similarity Relations.”</span> <em>Geographical Analysis</em> 47 (2): 97–120. <a href="https://doi.org/10.1111/gean.12044">https://doi.org/10.1111/gean.12044</a>.
-</div>
 <div id="ref-Kanaroglou2016" class="csl-entry">
 Kanaroglou, Pavlos. 2016. <em>Spatial Analysis in Health Geography</em>. Routledge. <a href="https://doi.org/10.4324/9781315610252">https://doi.org/10.4324/9781315610252</a>.
 </div>
 <div id="ref-lopez2012" class="csl-entry">
 López, Fernando A, and Antonio Páez. 2012. <span>“Distribution-Free Inference for q (m) Based on Permutational Bootstrapping: An Application to the Spatial Co-Location Pattern of Firms in Madrid.”</span> <em>Estad<span>ı́</span>stica Espa<span>ñ</span>ola</em> 54 (177): 135–56.
-</div>
-<div id="ref-paez2021" class="csl-entry">
-Paez, Antonio, Fernando A Lopez, Tatiane Menezes, Renata Cavalcanti, and Maira Galdino da Rocha Pitta. 2021. <span>“A Spatio-Temporal Analysis of the Environmental Correlates of COVID-19 Incidence in Spain.”</span> <em>Geographical Analysis</em> 53 (3): 397–421. <a href="https://doi.org/10.1111/gean.12241">https://doi.org/10.1111/gean.12241</a>.
 </div>
 <div id="ref-pebesma2018" class="csl-entry">
 Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R: Standardized Support for Spatial Vector Data</span>.”</span> <em><span>The R Journal</span></em> 10 (1): 439–46. <a href="https://doi.org/10.32614/RJ-2018-009">https://doi.org/10.32614/RJ-2018-009</a>.

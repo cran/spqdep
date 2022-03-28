@@ -121,12 +121,20 @@ formula <- ~ Male2Female
 lsrq <- local.sp.runs.test(formula = formula, data = provinces_spain, listw = listw, distr ="bootstrap", nsim = 199)
 plot(lsrq, sf = provinces_spain, sig = 0.10)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----bernoulli-scan, warning = FALSE------------------------------------------
 formula <- ~ Male2Female
-scan.spain <- spqdep::scan.test(formula = formula, data = provinces_spain, case="men", nsim = 99, distr = "bernoulli")
+scan.spain <- spqdep::scan.test(formula = formula, data = provinces_spain, 
+                                case="men", nsim = 99, distr = "bernoulli")
 print(scan.spain)
 
-## -----------------------------------------------------------------------------
+## ----flexible-scan, warning = FALSE, collapse = TRUE--------------------------
+listw <- spdep::poly2nb(provinces_spain, queen = FALSE)
+scan.spain <- spqdep::scan.test(formula = formula, data = provinces_spain, 
+                                case="men", nsim = 99, windows = "flexible", 
+                                listw = listw, nv = 6, distr = "bernoulli")
+print(scan.spain)
+
+## ----multinomial-scan---------------------------------------------------------
 data(FastFood.sf)
 formula <- ~ Type
 scan.fastfood <- scan.test(formula = formula, data = FastFood.sf, nsim = 99, distr = "multinomial", windows = "elliptic", 
