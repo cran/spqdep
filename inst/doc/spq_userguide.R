@@ -1,16 +1,17 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
-## ---- message = FALSE, collapse = TRUE, warning = FALSE-----------------------
+## ----message = FALSE, collapse = TRUE, warning = FALSE------------------------
 library(spdep)
 library(spatialreg)
 library(sf)
 library(ggplot2)
 
-## ---- message = FALSE, collapse = TRUE----------------------------------------
+## ----message = FALSE, collapse = TRUE-----------------------------------------
 library(spqdep)
 data("provinces_spain", package = "spqdep")
 data("FastFood.sf", package = "spqdep")
+data("Boots.sf", package = "spqdep")
 
 ## -----------------------------------------------------------------------------
 set.seed(123)
@@ -18,12 +19,12 @@ N <- 100
 cx <- runif(N)
 cy <- runif(N)
 coor <- cbind(cx,cy)
-p <- c(1/6,3/6,2/6)
-rho = 0.5
+p <- c(1/6,3/6,2/6) # proportion of classes
+rho = 0.5 # level of spatial structure
 listw <- spdep::nb2listw(knn2nb(knearneigh(coor, k = 4)))
 fx <- dgp.spq(list = listw, p = p, rho = rho)
 
-## -----------------------------------------------------------------------------
+## ----results='hide'-----------------------------------------------------------
 ggplot(data.frame(fx = fx, cx = cx, cy = cy), aes(x = cx, y = cy, color = fx)) + 
     geom_point(size = 6) +
     theme_bw()
@@ -61,12 +62,12 @@ summary(q.test)
 ## -----------------------------------------------------------------------------
 plot(q.test)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 # Case 3: With a sf object with isolated areas
 sf_use_s2(FALSE)
-provinces_spain$Male2Female <- factor(provinces_spain$Male2Female > 100)
-levels(provinces_spain$Male2Female) = c("men","woman")
-f1 <- ~ Male2Female
+provinces_spain$Mal2Fml <- factor(provinces_spain$Mal2Fml > 100)
+levels(provinces_spain$Mal2Fml) = c("men","woman")
+f1 <- ~ Mal2Fml
 q.test.sf <- Q.test(formula = f1, data = provinces_spain, m = 3, r = 1)
 
 ## -----------------------------------------------------------------------------
@@ -110,19 +111,19 @@ print(lsrq)
 ## -----------------------------------------------------------------------------
 plot(lsrq, sig = 0.05)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 data("provinces_spain")
 listw <- spdep::poly2nb(as(provinces_spain,"Spatial"), queen = FALSE)
-provinces_spain$Male2Female <- factor(provinces_spain$Male2Female > 100)
-levels(provinces_spain$Male2Female) = c("men","woman")
-plot(provinces_spain["Male2Female"])
-formula <- ~ Male2Female
+provinces_spain$Mal2Fml <- factor(provinces_spain$Mal2Fml > 100)
+levels(provinces_spain$Mal2Fml) = c("men","woman")
+plot(provinces_spain["Mal2Fml"])
+formula <- ~ Mal2Fml
 # Boots Version
 lsrq <- local.sp.runs.test(formula = formula, data = provinces_spain, listw = listw, distr ="bootstrap", nsim = 199)
 plot(lsrq, sf = provinces_spain, sig = 0.10)
 
 ## ----bernoulli-scan, warning = FALSE------------------------------------------
-formula <- ~ Male2Female
+formula <- ~ Mal2Fml
 scan.spain <- spqdep::scan.test(formula = formula, data = provinces_spain, 
                                 case="men", nsim = 99, distr = "bernoulli")
 print(scan.spain)
@@ -144,27 +145,33 @@ print(scan.fastfood)
 ## -----------------------------------------------------------------------------
 summary(scan.fastfood)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 plot(scan.spain, sf = provinces_spain)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 plot(scan.fastfood, sf = FastFood.sf)
 
-## ---- warning = FALSE, collapse=TRUE------------------------------------------
+## ----warning = FALSE, collapse=TRUE-------------------------------------------
 coor <- st_coordinates(st_centroid(FastFood.sf))
 listw <- spdep::knearneigh(coor, k = 4)
 formula <- ~ Type
 similarity <- similarity.test(formula = formula, data = FastFood.sf, listw = listw)
 print(similarity)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 provinces_spain$Older <- cut(provinces_spain$Older, breaks = c(-Inf,19,22.5,Inf))
 levels(provinces_spain$Older) = c("low","middle","high")
-f1 <- ~ Older + Male2Female
+f1 <- ~ Older + Mal2Fml
 jc1 <- jc.test(formula = f1, data = provinces_spain, distr = "asymptotic", alternative = "greater", zero.policy = TRUE)
 summary(jc1)
 
-## ---- warning = FALSE---------------------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 jc1 <- jc.test(formula = f1, data = provinces_spain, distr = "mc", alternative = "greater", zero.policy = TRUE)
 summary(jc1)
+
+## -----------------------------------------------------------------------------
+data(Boots.sf)
+listw <- spdep::poly2nb(as(Boots.sf,"Spatial"), queen = TRUE)
+formula <- ~ BW
+ljc <- local.jc.test(formula = formula, data = Boots.sf, case="B", listw = listw)
 

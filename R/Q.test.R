@@ -48,6 +48,11 @@
 #' }
 #'
 #' @details
+#' The Q-test is a simple, consistent, and powerful statistic for qualitative spatial
+#'  independence that we develop using concepts from symbolic dynamics and symbolic
+#'   entropy. The Q test can be used to detect, given a spatial distribution of events,
+#'   patterns of spatial association of qualitative variables in a wide variety of
+#'   settings. \cr
 #' The Q(m) statistic was introduced by Ruiz et al. (2010) as a tool to explore geographical
 #' co-location/co-occurrence of qualitative data. Consider a spatial variable X which is the
 #' result of a qualitative process with a set number of categorical outcomes \eqn{a_j} (j=1,...,k).
@@ -72,8 +77,8 @@
 #' co-locate. This is the number of permutations with replacement.\cr
 #' For instance, if k=2
 #' (e.g. the possible outcomes are a1=0 and a2=1) and m=3, the following eight unique
-#' patterns of co-location are possible (the number of symbols is \eqn{n_{\sigma}}=8): {0,0,0}, {1,0,0},
-#' {0,1,0}, {0,0,1}, {1,1,0}, {1,0,1}, {0,1,1}, and {1,1,1}. Each unique co-locationtype
+#' patterns of co-location are possible (the number of symbols is \eqn{n_{\sigma}}=8): (0,0,0), (1,0,0),
+#' (0,1,0), (0,0,1), (1,1,0), (1,0,1), (0,1,1), and (1,1,1). Each unique co-locationtype
 #' can be denoted in a convenient way by means of a symbol \eqn{\sigma_i} \eqn{(i=1, 2,...,k^m)}. It follows
 #' that each site can be uniquely associated with a specific symbol, in a process termed
 #' symbolization. In this way, we say that a location s is of type \eqn{\sigma_i} if and only if \eqn{X_m(s)=\sigma_i}.\cr
@@ -141,7 +146,9 @@
 #'  nearest neighbours to \eqn{s_1}, namely, \eqn{ \{ s_1^1, s_2^1,...,s^1_{m-1} \} } in the
 #'  set of locations \eqn{S \setminus A_0 } and define \eqn{s_2=s^1_{m-r-1} }. Nor for i>1 we define
 #'  \eqn{s_i = s^{i-1}_{m-r-1}} where \eqn{s^{i-1}_{m-r-1}} is in the ser of nearest neighbors to \eqn{s_{i-1}},
-#'   \eqn{ \{ s_1^{i-1},s_2^{i-1},...,s_{m-1}^{i-1} \} } ,of the set \eqn{S \setminus \{ \cup_{j=0}^{i-1} A_j \} }. Continue this process while there are locations to symbolize.\cr
+#'   \eqn{ \{ s_1^{i-1},s_2^{i-1},...,s_{m-1}^{i-1} \} } ,of the set \eqn{S \setminus \{ \cup_{j=0}^{i-1} A_j \} }.
+#'   Continue this process while there are locations to symbolize.\cr
+#'
 #' @section Selection of m-surroundings for bootstrap distribution:
 #' The bootstrapped-based testing can provide an advantage since overlapping between
 #' m-surroundings is not a consideration, and the full sample can be used.\cr
@@ -195,11 +202,11 @@
 #' # Case 3: With a sf object with isolated areas
 #' data("provinces_spain")
 #' sf::sf_use_s2(FALSE)
-#' provinces_spain$Male2Female <- factor(provinces_spain$Male2Female > 100)
-#' levels(provinces_spain$Male2Female) = c("men","woman")
+#' provinces_spain$Mal2Fml<- factor(provinces_spain$Mal2Fml > 100)
+#' levels(provinces_spain$Mal2Fml) = c("men","woman")
 #' provinces_spain$Older <- cut(provinces_spain$Older, breaks = c(-Inf,19,22.5,Inf))
 #' levels(provinces_spain$Older) = c("low","middle","high")
-#' f1 <- ~ Older + Male2Female
+#' f1 <- ~ Older + Mal2Fml
 #' q.test <- Q.test(formula = f1,
 #' data = provinces_spain, m = 3, r = 1, control = list(seedinit = 1111))
 #' summary(q.test)
