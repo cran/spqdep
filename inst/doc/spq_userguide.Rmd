@@ -497,7 +497,8 @@ plot(scan.spain, sf = provinces_spain)
 ```
 
 ```{r, warning = FALSE}
-plot(scan.fastfood, sf = FastFood.sf)
+data(FastFood.sf)
+# plot(scan.fastfood, sf = FastFood.sf)
 ```
 
 # Similarity test

@@ -149,7 +149,8 @@ summary(scan.fastfood)
 plot(scan.spain, sf = provinces_spain)
 
 ## ----warning = FALSE----------------------------------------------------------
-plot(scan.fastfood, sf = FastFood.sf)
+data(FastFood.sf)
+# plot(scan.fastfood, sf = FastFood.sf)
 
 ## ----warning = FALSE, collapse=TRUE-------------------------------------------
 coor <- st_coordinates(st_centroid(FastFood.sf))
