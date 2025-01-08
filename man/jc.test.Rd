@@ -3,8 +3,8 @@
 \name{jc.test}
 \alias{jc.test}
 \title{A function to compute joint-count test for
-  binomial and multinomial (asymptotic and
-  permutation distributions).}
+binomial and multinomial (asymptotic and
+permutation distributions).}
 \usage{
 jc.test(formula = NULL,
                data = NULL,
@@ -53,60 +53,60 @@ must be one of "greater" (default), or "less".}
 }
 \value{
 An \code{spjctest} object. This type of object
-  is a list of \code{htest} objects.
-  The length of the list is the number of
-  factor variables included in the
-  \code{formula} or the number of columns
-  in \code{fx}.
-  Each element of the list can be a
-  \code{jclist} object, for binomial factors,
-  or a \code{jcmulti} object for multinomial
-  factors. See \code{\link[spdep]{joincount.test}}
-  or \code{\link[spdep]{joincount.multi}}
-  for additional details.
+is a list of \code{htest} objects.
+The length of the list is the number of
+factor variables included in the
+\code{formula} or the number of columns
+in \code{fx}.
+Each element of the list can be a
+\code{jclist} object, for binomial factors,
+or a \code{jcmulti} object for multinomial
+factors. See \code{\link[spdep]{joincount.test}}
+or \code{\link[spdep]{joincount.multi}}
+for additional details.
 }
 \description{
 A function to compute joincount
-  tests for spatial qualitative data. This function
-  is a wrapper of \code{\link[spdep]{joincount.multi}}
-  and \code{\link[spdep]{joincount.test}}
-  in \pkg{spdep} package.
+tests for spatial qualitative data. This function
+is a wrapper of \code{\link[spdep]{joincount.multi}}
+and \code{\link[spdep]{joincount.test}}
+in \pkg{spdep} package.
 }
 \section{Control arguments}{
 
-  \tabular{ll}{
-    \code{nsim} \tab number of permutations used in
-       the Monte Carlo distribution.
-       Default \code{nsim} = 999. \cr
-    \code{seedinit} \tab seed to select the initial
-      element during the simulations.
-      Default \code{seedinit} = 1111. \cr
-   \code{adjust.n} \tab default *TRUE*,
-     if *FALSE* the number of observations
-     is not adjusted for no-neighbour
-     observations, if *TRUE*, the number of
-     observations is adjusted consistently.
-     See \code{\link[spdep]{joincount.multi}}
-     for aditional information. \cr
-   \code{spChk} \tab	should the data vector
-     names be checked against the spatial
-     objects for identity integrity,
-     *TRUE*, or *FALSE*, default *NULL* to
-     use *get.spChkOption()*.
-     See \code{\link[spdep]{joincount.multi}}
-     for aditional information. \cr
-   \code{sampling} \tab default *nonfree*,
-     may be *free*.
-     See \code{\link[spdep]{joincount.test}} for
-     additional information. \cr
-   \code{queen} \tab default *TRUE*. Defines
-     the neighborhood criteria for *sf*
-     objects. \cr
-   \code{style} \tab defines the style for
-     \code{listw}. Default = *B* (binary). \cr
-   \code{knn} \tab chooses the number of
-     neighboors when this criteria is used.
-     Default \code{knn} = 5.
+\tabular{ll}{
+\code{nsim} \tab number of permutations used in
+the Monte Carlo distribution.
+Default \code{nsim} = 999. \cr
+\code{seedinit} \tab seed to select the initial
+element during the simulations.
+Default \code{seedinit} = 1111. \cr
+\code{adjust.n} \tab default \emph{TRUE},
+if \emph{FALSE} the number of observations
+is not adjusted for no-neighbour
+observations, if \emph{TRUE}, the number of
+observations is adjusted consistently.
+See \code{\link[spdep]{joincount.multi}}
+for aditional information. \cr
+\code{spChk} \tab	should the data vector
+names be checked against the spatial
+objects for identity integrity,
+\emph{TRUE}, or \emph{FALSE}, default \emph{NULL} to
+use \emph{get.spChkOption()}.
+See \code{\link[spdep]{joincount.multi}}
+for aditional information. \cr
+\code{sampling} \tab default \emph{nonfree},
+may be \emph{free}.
+See \code{\link[spdep]{joincount.test}} for
+additional information. \cr
+\code{queen} \tab default \emph{TRUE}. Defines
+the neighborhood criteria for \emph{sf}
+objects. \cr
+\code{style} \tab defines the style for
+\code{listw}. Default = \emph{B} (binary). \cr
+\code{knn} \tab chooses the number of
+neighboors when this criteria is used.
+Default \code{knn} = 5.
 }
 }
 
@@ -173,20 +173,20 @@ summary(jc6)
 }
 \references{
 \itemize{
-  \item Cliff, A. D., Ord, J. K. 1981 \emph{Spatial processes}, Pion, pp. 19-20.
-  \item Upton, G., Fingleton, B. 1985 \emph{Spatial data analysis by example: point pattern and qualitative data}, Wiley, pp. 158–170.
-  }
+\item Cliff, A. D., Ord, J. K. 1981 \emph{Spatial processes}, Pion, pp. 19-20.
+\item Upton, G., Fingleton, B. 1985 \emph{Spatial data analysis by example: point pattern and qualitative data}, Wiley, pp. 158–170.
+}
 }
 \seealso{
 \code{\link{print.summary.spqtest}},
-  \code{\link[spdep]{joincount.test}},
-  \code{\link[spdep]{joincount.multi}}
+\code{\link[spdep]{joincount.test}},
+\code{\link[spdep]{joincount.multi}}
 }
 \author{
 \tabular{ll}{
-  Fernando López  \tab \email{fernando.lopez@upct.es} \cr
-  Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
-  Antonio Páez \tab \email{paezha@gmail.com} \cr
-  Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
-  }
+Fernando López  \tab \email{fernando.lopez@upct.es} \cr
+Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
+Antonio Páez \tab \email{paezha@gmail.com} \cr
+Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
+}
 }

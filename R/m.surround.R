@@ -125,19 +125,7 @@
 #' plot(msurr_points, type = 1)
 #' plot(msurr_points, type = 2)
 #'
-#' # Example 4: Examples with multipolygons
-#' fname <- system.file("shape/nc.shp", package="sf")
-#' nc <- sf::st_read(fname)
-#' plot(sf::st_geometry(nc))
-#' m <- 3
-#' r <- 1
-#' msurr_polygonsf <- m.surround(x = nc, m = m, r = r,
-#'                    distance = "Great Circle",
-#'                    control=list(dtmaxpc = 0.20))
-#' plot(msurr_polygonsf, type = 1)
-#' plot(msurr_polygonsf, type = 2)
-#'
-#' # Example 5: With regular lattice
+#' # Example 4: With regular lattice
 #' sfc = sf::st_sfc(sf::st_polygon(list(rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0)))))
 #' hexs <- sf::st_make_grid(sfc, cellsize = 0.1, square = FALSE)
 #' hexs.sf <- sf::st_sf(hexs)
@@ -167,23 +155,23 @@ m.surround <- function(x , m, r = 1, distance = "Euclidean", control = list()) {
   # Transform matrix coordinates into SpatialPoints class
   if (is.matrix(x)) x <- sp::SpatialPoints(x)
   # Transform Spatial classes into sf class
-  if (inherits(x, "Spatial")) x <- as(x, "sf")
+  if (inherits(x, "Spatial")) x <- methods::as(x, "sf")
   # Compute centroids/coordinates/distances from sf objects
   if (inherits(x, "sf")) {
-  xct <- suppressWarnings(st_centroid(st_geometry(x)))
+  xct <- suppressWarnings(sf::st_centroid(sf::st_geometry(x)))
   } else stop("object must be either sf, sp or matrix class")
   N <- length(xct)
   if (!is.null(r)) R <- trunc((N - m)/(m - r)) + 1 else R <- N
 
-  if (inherits(st_geometry(x)[1],
+  if (inherits(sf::st_geometry(x)[1],
                "sfc_MULTIPOLYGON"))
-    mcoor <- st_coordinates(xct)
-  if (inherits(st_geometry(x)[1],
+    mcoor <- sf::st_coordinates(xct)
+  if (inherits(sf::st_geometry(x)[1],
                "sfc_POINT"))
-    mcoor <- st_coordinates(x)
-  mcoor <- st_coordinates(xct)
+    mcoor <- sf::st_coordinates(x)
+  mcoor <- sf::st_coordinates(xct)
   rownames(mcoor) <- as.character(1:N)
-  mdtfull <- st_distance(xct, which = distance)
+  mdtfull <- sf::st_distance(xct, which = distance)
   # full distance matrix
   rownames(mdtfull) <- colnames(mdtfull) <- as.character(1:N)
 

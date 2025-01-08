@@ -283,15 +283,15 @@ Q.test <- function(formula = NULL, data = NULL, na.action,
     data <- sf::st_as_sf(data, coords = c("Lat","Lon"))
   }
   if (!is.null(formula) && !is.null(data)) {
-    if (inherits(data, "Spatial")) data <- as(data, "sf")
-    mfx <- model.frame(formula, data, na.action = na.action)
+    if (inherits(data, "Spatial")) data <- methods::as(data, "sf")
+    mfx <- stats::model.frame(formula, data, na.action = na.action)
     #mfx <- get_all_vars(formula, data)
   } else if (!is.null(fx) && !is.null(coor)) {
     mfx <- fx
     if (!is.matrix(mfx) && !is.data.frame(mfx)) mfx <- as.matrix(mfx, ncol = 1)
     mfx <- as.data.frame(mfx)
     if (is.matrix(coor)) coor <- sp::SpatialPoints(coor)
-    if (inherits(coor, "Spatial")) coor <- as(coor, "sf")
+    if (inherits(coor, "Spatial")) coor <- methods::as(coor, "sf")
     data <- coor #sf object
   } else stop("input data wrong")
   for (i in 1:ncol(mfx)) {
@@ -356,7 +356,7 @@ Q.test <- function(formula = NULL, data = NULL, na.action,
           names(parameter) <- rep("df", 2)
            p.value <- rep(0, length(parameter))
           for (l in 1:length(p.value)) {
-            p.value[l] <- pchisq(statistic[l], df = parameter[l],
+            p.value[l] <- stats::pchisq(statistic[l], df = parameter[l],
                                  lower.tail = FALSE)
           }
           lres_i <- vector(mode = "list", length = length(statistic))

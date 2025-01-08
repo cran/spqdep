@@ -23,51 +23,51 @@ Default = "Euclidean".}
 }
 \value{
 A list of class \code{list} and \code{m_surr} containing the following components:\cr
-  \tabular{ll}{
-    \code{ms} \tab a matrix. Each row is a m-surrounding. \cr
-    \code{R} \tab total number of observations. \cr
-    \code{rowexcl} \tab index of rows excluded. \cr
-    \code{mdtms} \tab distances between the observations of
-      each m-surrounding.\cr
-    \code{N} \tab total number of symbolized observations.\cr
-    \code{m} \tab length of the m-surroundings.\cr
-    \code{r} \tab overlapping degree.\cr
-    \code{initobs} \tab element to start the generation of m-surroundings.\cr
-    \code{distance} \tab type of distance.\cr
-    \code{m} \tab length of the m-surroundings.\cr
-    \code{x} \tab the input "x" as sf-object.\cr
-    }
+\tabular{ll}{
+\code{ms} \tab a matrix. Each row is a m-surrounding. \cr
+\code{R} \tab total number of observations. \cr
+\code{rowexcl} \tab index of rows excluded. \cr
+\code{mdtms} \tab distances between the observations of
+each m-surrounding.\cr
+\code{N} \tab total number of symbolized observations.\cr
+\code{m} \tab length of the m-surroundings.\cr
+\code{r} \tab overlapping degree.\cr
+\code{initobs} \tab element to start the generation of m-surroundings.\cr
+\code{distance} \tab type of distance.\cr
+\code{m} \tab length of the m-surroundings.\cr
+\code{x} \tab the input "x" as sf-object.\cr
+}
 }
 \description{
 This function obtains the m-surroundings
-  by selecting the *m-1* nearest neighbors
-  of each observation, allowing for a degree of
-  overlap of *r*.
+by selecting the \emph{m-1} nearest neighbors
+of each observation, allowing for a degree of
+overlap of \emph{r}.
 }
 \section{Control arguments}{
 
-  \itemize{
-    \item \code{initobs}: Initial observation to begin the
-      m-surrounding process. Default = 1.
-    \item \code{dtmaxabs}: Threshold of distance (in absolute
-      value) to prune the m-surroundings. Any m-surrounding
-      exceeding the threshold is excluded.
-      If \code{dtmaxabs} = 0 there is no exclusion of m-surroundings.
-      Default = 0.
-    \item  \code{dtmaxpc}: Threshold of distance (as a percentage
-      of the maximum distance between observations) to prune the m-surroundings. Any m-surrounding
-      exceeding the threshold is excluded.
-      Example if \code{dtmaxpc} = 0.1 the m-surrounding exceeding
-      the 10% of the maximum distance between observations are excluded.
-      If \code{dtmaxpc} = 0 there is no exclusion of m-surroundings.
-      Default = 0.
-    \item  \code{dtmaxknn}: Eliminate m-surroundings where some
-      of the elements are not among the closest
-      knn (k-nearest-neighbors).
-      Example, if \code{dtmaxknn} = 4 exclude m-surroundings
-      where some of the elements are not between the 4 closest.
-      Default \code{dtmaxknn} = 0 (no exclusion)
-   }
+\itemize{
+\item \code{initobs}: Initial observation to begin the
+m-surrounding process. Default = 1.
+\item \code{dtmaxabs}: Threshold of distance (in absolute
+value) to prune the m-surroundings. Any m-surrounding
+exceeding the threshold is excluded.
+If \code{dtmaxabs} = 0 there is no exclusion of m-surroundings.
+Default = 0.
+\item  \code{dtmaxpc}: Threshold of distance (as a percentage
+of the maximum distance between observations) to prune the m-surroundings. Any m-surrounding
+exceeding the threshold is excluded.
+Example if \code{dtmaxpc} = 0.1 the m-surrounding exceeding
+the 10\% of the maximum distance between observations are excluded.
+If \code{dtmaxpc} = 0 there is no exclusion of m-surroundings.
+Default = 0.
+\item  \code{dtmaxknn}: Eliminate m-surroundings where some
+of the elements are not among the closest
+knn (k-nearest-neighbors).
+Example, if \code{dtmaxknn} = 4 exclude m-surroundings
+where some of the elements are not between the 4 closest.
+Default \code{dtmaxknn} = 0 (no exclusion)
+}
 }
 
 \examples{
@@ -126,19 +126,7 @@ msurr_points <- m.surround(x = provinces_spain, m = m, r = r,
 plot(msurr_points, type = 1)
 plot(msurr_points, type = 2)
 
-# Example 4: Examples with multipolygons
-fname <- system.file("shape/nc.shp", package="sf")
-nc <- sf::st_read(fname)
-plot(sf::st_geometry(nc))
-m <- 3
-r <- 1
-msurr_polygonsf <- m.surround(x = nc, m = m, r = r,
-                   distance = "Great Circle",
-                   control=list(dtmaxpc = 0.20))
-plot(msurr_polygonsf, type = 1)
-plot(msurr_polygonsf, type = 2)
-
-# Example 5: With regular lattice
+# Example 4: With regular lattice
 sfc = sf::st_sfc(sf::st_polygon(list(rbind(c(0,0), c(1,0), c(1,1), c(0,1), c(0,0)))))
 hexs <- sf::st_make_grid(sfc, cellsize = 0.1, square = FALSE)
 hexs.sf <- sf::st_sf(hexs)
@@ -152,15 +140,15 @@ summary(msurr_polygonsf)
 }
 \references{
 \itemize{
-    \item Ruiz M, López FA, A Páez. (2010). Testing for spatial association of qualitative
-    data using symbolic dynamics. \emph{Journal of Geographical Systems}. 12 (3) 281-309
-  }
+\item Ruiz M, López FA, A Páez. (2010). Testing for spatial association of qualitative
+data using symbolic dynamics. \emph{Journal of Geographical Systems}. 12 (3) 281-309
+}
 }
 \author{
 \tabular{ll}{
-  Fernando López  \tab \email{fernando.lopez@upct.es} \cr
-  Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
-  Antonio Páez \tab \email{paezha@gmail.com} \cr
-  Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
-  }
+Fernando López  \tab \email{fernando.lopez@upct.es} \cr
+Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
+Antonio Páez \tab \email{paezha@gmail.com} \cr
+Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
+}
 }

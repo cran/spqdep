@@ -45,8 +45,8 @@ nb2nb_order <- function(listw = listw, sf = NULL){
 
 # n <- length(listw)
 # co <- as.data.frame(sf::st_coordinates(sf::st_centroid(sf)))
-# co <- st_as_sf(co,coords=c("X","Y"), crs = 32630)
-# dis <- 1/matrix(as.numeric(st_distance(co,co)),ncol=n,nrow=n)
+# co <- sf::st_as_sf(co,coords=c("X","Y"), crs = 32630)
+# dis <- 1/matrix(as.numeric(sf::st_distance(co,co)),ncol=n,nrow=n)
 # diag(dis) <- 0
 # matw <- nb2mat(listw,style = 'B', zero.policy = TRUE)
 # m <- rowSums(matw)
@@ -64,7 +64,7 @@ nb2nb_order <- function(listw = listw, sf = NULL){
   matw <- spdep::nb2mat(listw, style = 'B',
                         zero.policy = TRUE)
   m <- rowSums(matw)
-  co <- st_coordinates(st_centroid(sf))
+  co <- sf::st_coordinates(sf::st_centroid(sf))
   NB <- list()
 for (i in 1:dim(co)[1]){
   if (m[i] == 0){NB[[i]]<- as.integer(0)}

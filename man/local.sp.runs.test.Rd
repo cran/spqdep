@@ -32,20 +32,20 @@ For the bootstrap version nsim is the number of permutations to obtain the pseud
 \value{
 The output is an object of the class localsrq \cr
 \cr
-  \code{local.SRQ} A matrix with \cr
-  \tabular{ll}{
-    \code{runs.i} \tab number of runs in the localization 'i'. \cr
-    \code{E.i} \tab expectation of local runs statistic in the localization 'i'. \cr
-    \code{Sd.i} \tab standard deviate of local runs statistic in the localization 'i'. \cr
-    \code{z.value} \tab standard value of local runs statistic (only for asymptotic version). \cr
-    \code{p.value} \tab p-value of local local runs statistic (only for asymptotic version). \cr
-    \code{zseudo.value} \tab standard value of local runs statistic (only for boots version). \cr
-    \code{pseudo.value} \tab p-value of local runs statistic (only for boots version). \cr
-    }
-    \code{MeanNeig} Mean of run.i \cr
-    \code{MaxNeig} Maximum of run.i  \cr
-    \code{listw} the object \code{listw} \cr
-    \code{alternative} a character string describing the alternative hypothesis \cr
+\code{local.SRQ} A matrix with \cr
+\tabular{ll}{
+\code{runs.i} \tab number of runs in the localization 'i'. \cr
+\code{E.i} \tab expectation of local runs statistic in the localization 'i'. \cr
+\code{Sd.i} \tab standard deviate of local runs statistic in the localization 'i'. \cr
+\code{z.value} \tab standard value of local runs statistic (only for asymptotic version). \cr
+\code{p.value} \tab p-value of local local runs statistic (only for asymptotic version). \cr
+\code{zseudo.value} \tab standard value of local runs statistic (only for boots version). \cr
+\code{pseudo.value} \tab p-value of local runs statistic (only for boots version). \cr
+}
+\code{MeanNeig} Mean of run.i \cr
+\code{MaxNeig} Maximum of run.i  \cr
+\code{listw} the object \code{listw} \cr
+\code{alternative} a character string describing the alternative hypothesis \cr
 }
 \description{
 This function calculates the local spatial runs tests for all localizations.
@@ -53,22 +53,22 @@ This function calculates the local spatial runs tests for all localizations.
 \details{
 The object \code{listw} can be the class:
 \itemize{
-    \item \code{knn}: Objects of the class knn that consider the neighbours in
-    order of proximity.
-    \item \code{nb}: If the neighbours are obtained from an sf object, the code internally
-    will call the function \code{\link{nb2nb_order}} it will order them in order
-    of proximity of the centroids.
-    \item \code{matrix}: If a object of matrix class based in the inverse of
-    the distance in introduced as argument, the function \code{\link{nb2nb_order}} will
-    also be called internally to transform the object the class matrix to a matrix of the
-     class nb with ordered neighbours.
-    }
+\item \code{knn}: Objects of the class knn that consider the neighbours in
+order of proximity.
+\item \code{nb}: If the neighbours are obtained from an sf object, the code internally
+will call the function \code{\link{nb2nb_order}} it will order them in order
+of proximity of the centroids.
+\item \code{matrix}: If a object of matrix class based in the inverse of
+the distance in introduced as argument, the function \code{\link{nb2nb_order}} will
+also be called internally to transform the object the class matrix to a matrix of the
+class nb with ordered neighbours.
+}
 }
 \section{Control arguments}{
 
-  \tabular{ll}{
-    \code{seedinit} \tab Numerical value for the seed in boot version. Default value seedinit = 123 \cr
-      }
+\tabular{ll}{
+\code{seedinit} \tab Numerical value for the seed in boot version. Default value seedinit = 123 \cr
+}
 }
 
 \examples{
@@ -185,15 +185,15 @@ print(lsrq)
 }
 \author{
 \tabular{ll}{
-  Fernando López  \tab \email{fernando.lopez@upct.es} \cr
-  Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
-  Antonio Páez \tab \email{paezha@gmail.com} \cr
-  Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
-  }
-  @references
-  \itemize{
-    \item Ruiz, M., López, F., and Páez, A. (2021).
-    A test for global and local homogeneity of categorical data based on spatial runs.
-      \emph{Working paper}.
-  }
+Fernando López  \tab \email{fernando.lopez@upct.es} \cr
+Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
+Antonio Páez \tab \email{paezha@gmail.com} \cr
+Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
+}
+@references
+\itemize{
+\item Ruiz, M., López, F., and Páez, A. (2021).
+A test for global and local homogeneity of categorical data based on spatial runs.
+\emph{Working paper}.
+}
 }

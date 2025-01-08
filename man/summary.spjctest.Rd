@@ -16,8 +16,8 @@ An object of class \emph{summary.spjctest}
 }
 \description{
 This function summarizes estimated \emph{spjctest} objects.
-  The tables in the output include basic information for each test.
-  blablabla...
+The tables in the output include basic information for each test.
+blablabla...
 }
 \examples{
 ## Multinomial + Binomial using a sf multipolygon
@@ -37,14 +37,14 @@ summary(jc1)
 }
 \seealso{
 \code{\link{print.summary.spqtest}},
-  \code{\link[spdep]{joincount.test}},
-  \code{\link[spdep]{joincount.multi}}
+\code{\link[spdep]{joincount.test}},
+\code{\link[spdep]{joincount.multi}}
 }
 \author{
 \tabular{ll}{
-  Fernando López  \tab \email{fernando.lopez@upct.es} \cr
-  Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
-  Antonio Páez \tab \email{paezha@gmail.com} \cr
-  Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
-  }
+Fernando López  \tab \email{fernando.lopez@upct.es} \cr
+Román Mínguez  \tab \email{roman.minguez@uclm.es} \cr
+Antonio Páez \tab \email{paezha@gmail.com} \cr
+Manuel Ruiz \tab \email{manuel.ruiz@upct.es} \cr
+}
 }

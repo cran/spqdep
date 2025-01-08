@@ -1,3 +1,9 @@
+## ----include = FALSE----------------------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -21,11 +27,11 @@ cy <- runif(N)
 coor <- cbind(cx,cy)
 p <- c(1/6,3/6,2/6) # proportion of classes
 rho = 0.5 # level of spatial structure
-listw <- spdep::nb2listw(knn2nb(knearneigh(coor, k = 4)))
+listw <- spdep::nb2listw(spdep::knn2nb(spdep::knearneigh(coor, k = 4)))
 fx <- dgp.spq(list = listw, p = p, rho = rho)
 
 ## ----results='hide'-----------------------------------------------------------
-ggplot(data.frame(fx = fx, cx = cx, cy = cy), aes(x = cx, y = cy, color = fx)) + 
+ggplot(data.frame(fx = fx, cx = cx, cy = cy), ggplot2::aes(x = cx, y = cy, color = fx)) + 
     geom_point(size = 6) +
     theme_bw()
 
@@ -169,10 +175,4 @@ summary(jc1)
 ## ----warning = FALSE----------------------------------------------------------
 jc1 <- jc.test(formula = f1, data = provinces_spain, distr = "mc", alternative = "greater", zero.policy = TRUE)
 summary(jc1)
-
-## -----------------------------------------------------------------------------
-data(Boots.sf)
-listw <- spdep::poly2nb(as(Boots.sf,"Spatial"), queen = TRUE)
-formula <- ~ BW
-ljc <- local.jc.test(formula = formula, data = Boots.sf, case="B", listw = listw)
 

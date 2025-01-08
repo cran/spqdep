@@ -218,7 +218,7 @@ local.sp.runs.test <-  function(formula = NULL, data = NULL, fx = NULL, distr = 
       listw <- nb2nb_order(listw=listw, sf = data)
     }
     if (inherits(listw, "matrix")){ # hay que ordenar los elementos
-      listw <- mat2listw(listw)$neighbours
+      listw <- spdep::mat2listw(listw)$neighbours
       class(listw) <- "nb"
       listw <- nb2nb_order(listw=listw, sf = data)
     }
@@ -232,8 +232,8 @@ local.sp.runs.test <-  function(formula = NULL, data = NULL, fx = NULL, distr = 
 
 # Selecciona los argumentos. Bien con (formula + data) o bien incluye la variable (fx)
   if (!is.null(formula) && !is.null(data)) {
-    if (inherits(data, "Spatial")) data <- as(data, "sf")
-    mxf <- get_all_vars(formula, data)
+    if (inherits(data, "Spatial")) data <- methods::as(data, "sf")
+    mxf <- stats::get_all_vars(formula, data)
   } else if (!is.null(fx)) {
     mxf <- fx
     # if (!is.matrix(mxf)) mxf <- as.matrix(mxf, ncol = 1)
@@ -275,7 +275,7 @@ for (i in 1:q){
 if (inherits(listw, "knn")){
 lnnb <- matrix(dim(listw$nn)[2],ncol = 1,nrow = dim(listw$nn)[1])}
 if (inherits(listw, "nb")){
-lnnb <- rowSums(nb2mat(listw,
+lnnb <- rowSums(spdep::nb2mat(listw,
                               style = 'B',
                               zero.policy = TRUE))
 }
@@ -343,11 +343,11 @@ MeanR <- 1 + lnnb*p
 StdR <- suppressWarnings(sqrt(lnnb*p*(1-p)+2*(lnnb-1)*(var2-p^2)+(lnnb-1)*(lnnb-2)*(var1-p^2)))
 ZZ <- (nruns-MeanR)/StdR
 if (alternative =="two.sided"){
-pZ <- 2*(1 - pnorm(abs(ZZ), mean = 0, sd = 1))
+pZ <- 2*(1 - stats::pnorm(abs(ZZ), mean = 0, sd = 1))
 } else if (alternative =="less"){
-pZ <- pnorm(ZZ, mean = 0, sd = 1)
+pZ <- stats::pnorm(ZZ, mean = 0, sd = 1)
 } else if (alternative =="greater"){
-pZ <- 1 - pnorm(ZZ, mean = 0, sd = 1)
+pZ <- 1 - stats::pnorm(ZZ, mean = 0, sd = 1)
 }
 
 local.SRQ <- cbind(nruns,MeanR,StdR,ZZ,pZ)
@@ -374,17 +374,17 @@ if (is.null(nsim) == FALSE && (distr != "asymptotic")){
   local.SRQP <- as.data.frame(local.SRQ[,1])
   names(local.SRQP) <- "SRQ"
   local.SRQP$EP.i <- rowMeans(LSRQP)
-  local.SRQP$SdP.i <- apply(LSRQP,1, sd, na.rm = TRUE)
+  local.SRQP$SdP.i <- apply(LSRQP,1, stats::sd, na.rm = TRUE)
 
   local.SRQP$zseudo.value <- (local.SRQP$SRQ - local.SRQP$EP.i)/local.SRQP$SdP.i
   if (alternative =="two.sided"){
-    pZ <- 2*(1 - pnorm(abs(local.SRQP$zseudo.value),
+    pZ <- 2*(1 - stats::pnorm(abs(local.SRQP$zseudo.value),
                               mean = 0, sd = 1))
   } else if (alternative =="less"){
-    pZ <- pnorm(local.SRQP$zseudo.value,
+    pZ <- stats::pnorm(local.SRQP$zseudo.value,
                        mean = 0, sd = 1)
   } else if (alternative =="greater"){
-    pZ <- 1 - pnorm(local.SRQP$zseudo.value,
+    pZ <- 1 - stats::pnorm(local.SRQP$zseudo.value,
                            mean = 0, sd = 1)
   }
   local.SRQP$pseudo.value <- pZ

@@ -1,37 +1,26 @@
 ---
-title: "spqdep user guide"
-subtitle: "The user guide <br>  <br>  <br>"
+title: "User Guide"
 author:
 - Fernando A. López, Technical University of Cartagena (Spain)
 - Román Mínguez, University of Castilla-La Mancha (Spain)
 - Antonio Páez, McMaster University (Canada)
 - Manuel Ruiz, Technical University of Cartagena (Spain) <br> <br> <br>
 date: "`r Sys.Date()` <br>"
-output:
-  bookdown::html_document2:
-    number_sections: yes
-    toc: yes
-    toc_depth: 2
-    toc_float:
-      collapsed: no
-      smooth_scroll: no
-    toc_title: Article Outline
-    self_contained: TRUE
-    linkcolor: red
 link-citations: yes
 bibliography: ["bibliospq.bib"]
-vignette: |
-  %\VignetteIndexEntry{spq_userguide}
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{user-guide}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown} 
-editor_options: 
-  chunk_output_type: inline
 ---
 
-<style>
-body {
-text-align: justify}
-</style>
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -54,7 +43,7 @@ Global and local statistics give information about the spatial structure of the 
 
 Three data sets will be used as examples in this guide:
 
-- **provinces_spain**: The division of Spain into provinces. It is a multypolygon geometry with isolated provinces (Canary and Balearic islands without neighbouring provinces). See by example Paez et al. 2021.
+- **provinces_spain**: The division of Spain into provinces. It is a multypolygon geometry with isolated provinces (Canary and Balearic islands without neighbouring provinces). See for example @paezSpatioTemporalAnalysisEnvironmental2021.
 
 - **FastFood.sf**: A simple feature (sf) dataframe containing the locations of a selection of fast food restaurants in the city of Toronto, Canada (data are from 2008). The data set used as example in @ruiz2010. It is a geometry of points.
 
@@ -83,14 +72,14 @@ cy <- runif(N)
 coor <- cbind(cx,cy)
 p <- c(1/6,3/6,2/6) # proportion of classes
 rho = 0.5 # level of spatial structure
-listw <- spdep::nb2listw(knn2nb(knearneigh(coor, k = 4)))
+listw <- spdep::nb2listw(spdep::knn2nb(spdep::knearneigh(coor, k = 4)))
 fx <- dgp.spq(list = listw, p = p, rho = rho)
 ```
 
 The next plot show the qualitative spatial process defined.
 
 ```{r, results='hide'}
-ggplot(data.frame(fx = fx, cx = cx, cy = cy), aes(x = cx, y = cy, color = fx)) + 
+ggplot(data.frame(fx = fx, cx = cx, cy = cy), ggplot2::aes(x = cx, y = cy, color = fx)) + 
     geom_point(size = 6) +
     theme_bw()
 ```
@@ -503,7 +492,7 @@ data(FastFood.sf)
 
 # Similarity test
 
-The Farber et al. (2014) paper develop the similarity test
+@farber_testing_2015 develop the similarity test.
 
 The \code{similarity.test()} function calculates the similarity test for both asymptotic distribution and permutational resampling.
 
@@ -536,29 +525,4 @@ jc1 <- jc.test(formula = f1, data = provinces_spain, distr = "mc", alternative =
 summary(jc1)
 ```
 
-# Local join-count tests
-
-This function calculates the local Join Count tests. This function is a wrapper of **local_joincount** in the **rgeoda** package.
-
-This test can be apply only for binary variables (usually named B and W), and count the number of joins of type B-B where the proportion of observations with B is loewer than half. The interest lies in identifying co-occurrences of uncommon events, i.e., situations where observations that take on the value of B constitute much less than half of the sample.
-
-The statistic recently introduced by  @anselinLi2019 is defined as:
-
-$$BB_i = x_i  \sum_j{w_{ij}x_j}$$
-where $x_i=1$ if in the localization i the variable $X$ take the value $B$ and 0 in otherwise. The $w_{ij}$ are the elements of a binary spatial weights matrix. The $BB_i$ statistic only count the  observations where $x_i=1$, since for $x_i=0$ the result will always equal zero.
-
-To apply the local Join Count statistic we consider the example of a regular lattice 
-
-```{r}
-data(Boots.sf)
-listw <- spdep::poly2nb(as(Boots.sf,"Spatial"), queen = TRUE)
-formula <- ~ BW
-ljc <- local.jc.test(formula = formula, data = Boots.sf, case="B", listw = listw)
-```
-
-
 # References
-
-Farber, S., Marin, M. R., & Páez, A. (2015). Testing for spatial independence using similarity relations. Geographical Analysis, 47(2), 97-120.
-
-Paez, A., Lopez, F. A., Menezes, T., Cavalcanti, R., & Pitta, M. G. D. R. (2021). A spatio‐temporal analysis of the environmental correlates of COVID‐19 incidence in Spain. Geographical analysis, 53(3), 397-421.

@@ -269,7 +269,7 @@ if (inherits(listw, "nb")){ # hay que ordenar los elementos
   listw <- nb2nb_order(listw=listw, sf = data)
 }
 if (inherits(listw, "matrix")){ # hay que ordenar los elementos
-      listw <- mat2listw(listw)$neighbours
+      listw <- spdep::mat2listw(listw)$neighbours
       class(listw) <- "nb"
       listw <- nb2nb_order(listw=listw, sf = data)
 }
@@ -285,8 +285,8 @@ if (sum(inherits(data, "sf")) == 0){
 ################################################
 # Selecciona los argumentos. Bien con (formula + data) o bien incluye la variable (fx)
   if (!is.null(formula) && !is.null(data)) {
-    if (inherits(data, "Spatial")) data <- as(data, "sf")
-    mxf <- get_all_vars(formula, data)
+    if (inherits(data, "Spatial")) data <- methods::as(data, "sf")
+    mxf <- stats::get_all_vars(formula, data)
   } else if (!is.null(fx)) {
     mxf <- fx
     # if (!is.matrix(mxf)) mxf <- as.matrix(mxf, ncol = 1)
@@ -330,7 +330,7 @@ for (i in 1:q){
 if (inherits(listw, "knn")){
 lnnb <- matrix(dim(listw$nn)[2],ncol = 1,nrow = dim(listw$nn)[1])}
 if (inherits(listw, "nb")){
-lnnb <- rowSums(nb2mat(listw, style = 'B',
+lnnb <- rowSums(spdep::nb2mat(listw, style = 'B',
                               zero.policy = TRUE))
 }
 
@@ -405,11 +405,11 @@ names(vec) <- c("Total runs","Mean total runs","Variance total runs")
 # The SRQ global test statistic which is N(0,1) distributed
 SRQ <- (SR-meanSR)/sqrt(varSR)
 if (alternative =="two.sided"){
-p.value <- 2*(1 - pnorm(abs(SRQ), mean = 0, sd = 1))
+p.value <- 2*(1 - stats::pnorm(abs(SRQ), mean = 0, sd = 1))
 } else if (alternative =="less"){
-p.value <- pnorm(SRQ, mean = 0, sd = 1)
+p.value <- stats::pnorm(SRQ, mean = 0, sd = 1)
 } else if (alternative =="greater"){
-p.value <- 1 - pnorm(SRQ, mean = 0, sd = 1)
+p.value <- 1 - stats::pnorm(SRQ, mean = 0, sd = 1)
 }
 
 ############################################################################
@@ -427,7 +427,7 @@ SRLP <- matrix(0,ncol = nsim, nrow = n)
     }
 
 vec <- c(SR,mean(colSums(SRLP)),
-         sd(colSums(SRLP))^2)
+         stats::sd(colSums(SRLP))^2)
 names(vec) <- c("Observed Total runs","Mean total runs boots","Variance total runs boots")
 
 if (alternative =="greater"){
